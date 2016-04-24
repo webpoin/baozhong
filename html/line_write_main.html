@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		#container{top: 64px;bottom: 70px;}
+		#container .scroll{padding-bottom: 10px;}
+		.mui-pull-bottom-pocket{display: none;}
+	</style>
+	<title>Document</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	
+
+	
+	<section class="write_info">
+		<div class="collect_img"><img src="../images/sight.jpg" alt=""></div>
+
+		<h3>[超值纯玩团]深圳一日游</h3>
+		<p>出发日期：2016-01-10</p>
+		<p>出发城市：深圳出发</p>
+		<p>出游人数：2成人</p>
+		<h6>
+
+			<label>
+				<input type="checkbox" name="" checked="checked">
+				<span>我已阅读并接受</span>
+			</label>
+			<a href="#">《预定须知，合同，保险等条款》</a>
+		</h6>
+	</section>
+
+	<form action="#" class="contacts_add write_self" style="border-top:1px solid #c8c7cc;">
+		<h2 class="order_title">
+			<i class="icon icon-xingzhuang258"></i>
+			<strong>预定人信息</strong>
+		</h2>
+		<ul>
+			<li>
+				<span><i class="icon icon-xingzhuang185"></i>姓名</span>
+				<label><input type="text" placeholder="必填" value=""></label>
+			</li>
+			<li>
+				<span><i class="icon icon-xingzhuang226"></i>手机号码</span>
+				<label><input type="text" placeholder="必填" value=""></label>
+			</li>
+		</ul>
+	</form>
+
+
+	<section class="write_other">
+		<h2 class="order_title">
+			<i class="icon icon-xingzhuang1"></i>
+			<strong>游客信息</strong>
+			<b>[0/6]</b>
+			<span><a href="user_contacts_select.html?viewId=user_contacts_select">选择游客</a></span>
+		</h2>
+		<ul>
+			<li class="write_other_nodata"><a href="user_contacts_select.html?viewId=user_contacts_select">请选择出游成员</a></li>
+
+<!-- 			<li>
+				<strong>刘启浩(成人)</strong>
+				<p>我需要一台婴儿车</p>
+				<label class="js-additional"><input type="checkbox" name="" ><b>附加服务</b></label>
+			</li>
+			<li>
+				<strong>刘启浩(成人)</strong>
+				<label class="js-additional"><input type="checkbox" name="" ><b>附加服务</b></label>
+			</li> -->
+		</ul>
+	</section>
+
+	<section class="order_insurance">
+		<h2 class="order_title">
+			<i class="icon icon-baoxian"></i>
+			<strong>保险信息</strong>
+		</h2>
+		<ul id="insurance" class="template">
+			<li>
+				<h3>
+					<strong>{{sellPriceListName}}</strong>
+					<small subdata="{{insurancePriceList}}">
+						年龄：{{minAge}} - {{maxAge}} 岁<em>￥{{price}}</em>元/人<br>
+					</small>
+				</h3>
+				<cite>
+					<button class="minus">-</button>
+					<span>1</span>
+					<button class="plus">+</button>
+				</cite>
+			</li>
+		</ul>
+	</section>
+
+
+	<section class="write_coupon">
+		<h2 class="order_title">
+			<i class="icon icon-youhuiquan"></i>
+			<strong>优惠信息</strong>
+		</h2>
+		<ul id="promotions">
+			<li>
+				<label>
+					<input type="checkbox" name="" checked="checked">
+					<h3>{{promotionName}}</h3>
+					<p>可享受<em>￥{{price}}</em>元优惠券</p>
+				</label>
+			</li>
+		</ul>
+	</section>
+
+
+	<section class="write_note">
+		<h2 class="order_title">
+			<i class="icon icon-teshuyaoqiu"></i>
+			<strong>特殊要求</strong>
+		</h2>
+		<label><textarea placeholder="哪里您有其他特殊的要求，请在此记录">sefsefe</textarea></label>
+	</section>
+
+	<div style="height: 10px;"></div>
+
+
+	
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var ready = (function(){
+			var idx = 2;
+			return function(){
+				if(--idx>0){return}	
+				document.querySelector('.loading').style.display = 'none';
+			}			
+		})();
+
+		// 保险信息
+		service({
+			"type" : "getInsurance",
+			"lineCategoryId":"3",
+			"days":4,
+			"start":0,
+			"limit":10
+		},function(json){
+			window.tplExchange(document.getElementById('insurance'),json.data,!json.ret);
+			ready();
+		});
+
+
+		// 优惠信息
+		service({
+			"type" : "getPromotions",
+		    "productId":"sdf78sy7d8fuysdf",
+			"supplierId":"78fs98dfjihf",
+			"clientPeerId":"9879sdjfhn",
+			"sellPriceListId":"987fsdfiusdhf8s7dftjhio",
+			"start":0,
+			"limit":10
+		},function(json){
+			window.tplExchange(document.getElementById('promotions'),json.data,!json.ret);
+			ready();
+		});
+
+
+
+		var tourist = function(){
+
+			var booking = JSON.parse(localStorage.getItem('tourist_booking') || '{}');
+			var have = JSON.parse(localStorage.getItem('tourist_select') || '[]');
+
+			var len1 = have.length;
+			var len2 = booking.tourist ? booking.tourist.length : 0;
+
+			document.querySelector('.write_other h2 b').innerHTML = '['+len1+'/'+len2+']'
+		}
+
+
+
+
+
+
+		// 打开附加服务
+		mui('body').on('tap','.js-additional',function(){
+
+			var home = plus.webview.getLaunchWebview();
+
+			mui.fire(home,'openFull',{href:'header.html?title=附加服务&url=additional'});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+
+
+		// 减少人数
+		mui('.order_insurance').on('tap','button.minus',function(){
+			var parent = this.parentNode;
+			var elem = parent.querySelector('span');
+			var val = parseInt(elem.innerHTML);
+			elem.innerHTML = val <1 ? 0 : val -1 ;
+			return false;
+		});
+
+
+		// 增加人数
+		mui('.order_insurance').on('tap','button.plus',function(){
+
+			var parent = this.parentNode;
+			var elem = parent.querySelector('span');
+			var val = parseInt(elem.innerHTML);
+			elem.innerHTML = val +1;
+			return false;
+		});
+
+
+		// 计算一次人数
+		tourist();
+
+	</script>
+
+
+</body>
+</html>

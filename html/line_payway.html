@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		#container{position: absolute;bottom: 60px;top: 64px;width: 100%;}
+		#container .scroll{position: absolute;left: 0;top: 0;width: 100%;min-height: 100%;padding-bottom: 10px;}
+		.mui-pull-bottom-pocket{display: none;}
+		.mui-android #container {overflow: auto;}
+		.mui-android #container .scroll{padding-bottom: 0;}
+
+	</style>
+	<title>Document</title>
+</head>
+<body>
+
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	
+
+	<header>
+		<cite>
+			<h2>支付订单</h2>
+		    <small class="toback"><i class="icon icon-fanhui"></i></small>
+		</cite>
+	</header>
+
+	<div id="container">
+		<div class="scroll" id="template">
+			
+			<section class="write_info write_info2">
+				<!-- <div class="collect_img"><img src="../images/sight.jpg" alt=""></div> -->
+				<h3>{{productName}}</h3>
+				<p>出发日期：{{useDate}}</p>
+				<p>出发城市：{{startingCityName}}</p>
+				<p>出游人数：{{touristCount}}人</p>
+				<h5>￥<b>{{moneyTotal}}</b></h5>
+			</section>
+
+			<section class="write_coupon">
+				<h2 class="order_title">
+					<i class="icon icon-youhuiquan"></i>
+					<strong>优惠信息</strong>
+				</h2>
+				<ul id="promotions">
+					<li subdata="{{couponList}}"  >
+						<label>
+							<input type="radio" name="coupon" {{checked}} id="{{id}}" realCouponPrice="{{realCouponPrice}}">
+							<h3>{{promotionName}}</h3>
+							<p>可享受<em>￥{{realCouponPrice}}</em>优惠券</p>
+						</label>
+					</li>
+				</ul>
+				<h6 class="{{havemore}}"></h6>
+			</section>
+
+
+			<section class="line_payway">
+				<h2 class="order_title">
+					<i class="icon icon-zhifu"></i>
+					<strong>选择支付方式</strong>
+				</h2>
+				<ul id="payInfoList">
+					<li subdata="{{payInfoList}}" >
+						<label>
+							<input type="radio" name="payway" id="{{payMethod}}">
+							<h3><img data-src="../images/line_payway_{{payMethod}}.png" > {{payMethodName}}</h3>
+						</label>
+					</li>
+				</ul>
+			</section>
+
+		</div>
+	</div>
+
+	<section class="line_ctrl">
+		<cite>
+			<span class="line_ctrl_total">实际付款:<em>￥13828.15</em></span>
+			<span class="line_ctrl_next"><a href="user_order_detail.html"><i class="icon icon-xingzhuang261"></i>立即支付</a></span>
+		</cite>
+	</section>
+
+
+	
+	<script src="../js/service.js"></script>
+	<script src="../js/iscroll-lite.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		!function(u){
+			// 如果是android，重写滚动
+			if(u.indexOf('Android') > -1 || u.indexOf('Adr') > -1){
+				IScroll = function (){this.refresh = function(){}}
+			}
+		}(navigator.userAgent);
+
+
+		var total = document.querySelector('.line_ctrl_total em');
+		var scroll = new IScroll('#container',{mouseWheel: false,scrollbars: false});
+		var line_payway = {'type':'setPay'}
+		var pays = {}; // 支付通道
+
+		var count = function(){
+			var checked = 0;
+
+			// 优惠券
+			Array.prototype.slice.call(document.querySelectorAll('#promotions input')).map(function(i){
+				if(i.checked){
+					checked += parseFloat(i.getAttribute('realCouponPrice'));
+					line_payway.couponId = i.getAttribute('id');
+				}
+			});
+
+			// 支付方式
+			Array.prototype.slice.call(document.querySelectorAll('#payInfoList input')).map(function(i){
+				if(i.checked){line_payway.paymentMethod = i.getAttribute('id');}
+			});
+
+			line_payway.payMoney = line_payway.moneyTotal - checked;
+			line_payway.payMoney = parseInt(line_payway.payMoney*100)/100;
+			line_payway.payMoney = line_payway.payMoney <0 ? 0 : line_payway.payMoney;
+
+
+			total.innerHTML = '￥' + line_payway.payMoney;
+		}
+
+
+
+
+		// 订单详情信息
+		service({
+			"type" : "getPayInfo",
+			"orderSaleId" : href.id,
+			"start":0,
+			"limit":10
+		},function(json){
+
+			if(json.ret){
+				line_payway.orderSaleId = href.id;
+				line_payway.moneyTotal = json.data.moneyTotal;
+
+				var selectedCouponId = json.data.selectedCouponId;
+				selectedCouponId && json.data.couponList.map(function(i){
+					i.checked =  i.id == selectedCouponId ? 'checked="true"' : '';
+				});
+
+				json.data.havemore = json.data.couponList.length >3 ? 'show' : '';
+
+			}else{
+				return false;
+			}
+
+			window.tplExchange(document.getElementById('template'),json.data,!json.ret);
+			document.querySelector('.line_payway input').checked = true;
+
+			if(json.data.couponList.length == 0){
+				document.querySelector('.write_coupon').style.display = 'none';
+			}
+
+			count();
+			scroll.refresh();
+			document.querySelector('.loading').style.display = 'none';
+
+		});
+
+
+		// 监听plusready事件  
+		document.addEventListener( "plusready", function(){
+			plus.payment.getChannels( function(channels){
+				channels.map(function(i){pays[i.id] = i;});
+			}, function(e){
+				alert( "获取支付通道列表失败："+e.message );
+			});
+		},false);
+		
+
+
+		mui('body').on('change','input',function(){count();});
+
+
+		// 点击支付
+		mui('body').on('tap','.line_ctrl_next a',function(){
+			
+			var parent = this.parentNode;
+			if(parent.classList.contains('disabled')){return false;}
+			parent.classList.add('disabled');
+
+
+			/***********************************************/
+			// 禁用支付
+			// plus.ui.toast('正在测试，禁用支付');
+			// return false;
+			/***********************************************/
+
+
+
+			// 提交订单
+			service(line_payway,function(json){
+
+				if(json.ret){
+
+					// 微信支付
+					if(line_payway.paymentMethod == 1){
+						plus.payment.request( pays['wxpay'], JSON.stringify(json.data), function(){
+							// 支付完成，刷新页面
+							var line_write =  plus.webview.getWebviewById('line_write');
+							var order_detail =  plus.webview.getWebviewById('order_detail');
+							line_write && line_write.reload();
+							order_detail && order_detail.reload();
+							mui.back();
+							plus.ui.toast('微信支付成功！');
+						}, function(e){
+							plus.ui.toast('支付失败，请重新支付');
+							location.reload();
+						} );
+					}
+
+					// 银联支付
+					if(line_payway.paymentMethod == 3){
+
+						localStorage.setItem('union',JSON.stringify(json.data));
+
+						// 新建页面
+						var home = plus.webview.getLaunchWebview();
+						home && mui.fire(home, 'openFull', {href:'header.html?title=银联支付&url=unionPaySuccess'});
+						plus.webview.currentWebview().close('none');
+					}
+
+				}else{
+					plus.ui.toast(json.msg);
+					parent.classList.remove('disabled');
+				}
+			});
+
+			return false;
+		});
+
+
+		// 展开收起优惠信息
+		mui('body').on('tap','.write_coupon h6',function(){
+			
+			var classList = this.parentNode.classList;
+			if(classList.contains('active')){
+				classList.remove('active');
+			}else{
+				classList.add('active');
+			}
+
+			scroll.refresh();
+			return false;
+		});
+
+
+
+
+
+	</script>
+
+</body>
+</html>

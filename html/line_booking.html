@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		#container{top: 64px;bottom: 60px;}
+		#container .scroll{padding-bottom: 10px;}
+		.mui-pull-bottom-pocket{display: none;}
+		.line_ctrl{position: fixed;bottom: 0;width: 100%;left: 0;}
+		.mui-android #container {position: absolute;width: 100%; overflow: auto;}
+	</style>
+	<title>线路预定</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	
+
+	<header>
+		<h2>线路预定</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+	</header>
+
+	<div class="pullRefresh" id="container" >
+		<div class="scroll">
+
+			<section class="booking_date">
+				<h3>
+					<a class="js-date-prex"><i class="icon icon-fanhui"></i></a>
+					<a class="js-date-next"><i class="icon icon-disclosure"></i></a>
+					<strong>2016年1月</strong>
+				</h3>
+				<table>
+					<thead>
+						<tr>
+							<th>日</th>
+							<th>一</th>
+							<th>二</th>
+							<th>三</th>
+							<th>四</th>
+							<th>五</th>
+							<th>六</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</section>
+
+			<section class="booking_number template" id="template" style="display: none;">
+				<h2>
+					<i class="icon icon-yuanjiaojuxing22kaobei"></i>
+					<strong>出行人数</strong>
+					<span>余位:<em>{{useableNum}}</em>位</span>
+				</h2>
+				<ul>
+					<li subdata="{{touristPriceList}}" class="booking_number_type{{productFormatId}}" index="{{idx}}">
+						<strong>{{productFormatName}}:<em>￥{{price}}</em>元/人</strong>
+						<cite>
+							<button class="minus">-</button>
+							<span>0</span>
+							<button class="plus">+</button>
+						</cite>
+					</li>
+				</ul>
+				<h6>*最终价格以确定出游方案为准</h6>
+			</section>
+
+		</div>
+	</div>
+
+
+	
+	<section class="line_ctrl">
+		<cite>
+			<span class="line_ctrl_total">总价:<em>￥0.00</em></span>
+			<span class="line_ctrl_next"><a href="line_write.html" viewId="line_write"><i class="icon icon-xingzhuang1"></i>填写游客信息</a></span>
+		</cite>
+	</section>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+
+		var booking_date = document.querySelector('.booking_date'); //盒子
+		var table = booking_date.querySelector('table'); // 表格
+		var thenext = document.querySelector('.line_ctrl_next'); // 下一步
+		var total = document.querySelector('.line_ctrl_total em'); // 总计标签
+		var date = href.date ? new Date(href.date) : new Date();	// 当前时间
+		var line_booking = {} // 预定的信息，后续计算使用
+			line_booking.productId = href.productId;
+			line_booking.supplierId = href.supplierId;
+
+		// 设置为一号
+		date.setDate(1);
+
+		var getTomonth = function(date){
+
+			var date = new Date(date);
+			var title = document.querySelector('.booking_date h3 strong');
+			var first = new Date(date.getFullYear(),date.getMonth(),1);
+			var days = new Date(date.getFullYear() , date.getMonth()+1, 0).getDate();
+			var reqstr = [date.getFullYear(),date.getMonth()+1].join('-') + '-';
+
+			var tpl1 = '<td class="td{{id}}">{{val}}<b>{{id}}</b></td>';
+			var tpl2 = '<a class="{{active}}" useDate="{{useDate}}" sellPriceListId={{sellPriceListId}} sellPriceId={{sellPriceId}}>￥{{price}}</a>';
+
+
+			title.innerHTML = date.getFullYear() + '年' + (date.getMonth()+1) + '月';
+
+
+			// 日期前填充
+			var arr = Array.apply(0,Array(first.getDay())).map(function() {return ''}) ;
+
+			// 日期填充
+			arr = arr.concat(Array.apply(0,Array(days)).map(function(a,i) {return i +1}));
+
+			// 日期后填充
+			arr = arr.concat(Array.apply(0,Array(7 - (arr.length%7 || 7))).map(function() {return ''}))
+
+
+
+
+			// 6.22 获取产品价格表
+			service({
+				"type" : "getLinePrice",
+				"productId": href.productId,
+				"supplierId": href.supplierId,
+				"useDateStart": reqstr + '01',
+				"useDateEnd": reqstr + days,
+				"start": 0,
+				"limit": 10
+			},function(json){
+
+
+				// 生成内容
+				var elem = false;
+				var obj = {};
+
+				json.data.map(function(i) {
+					i.active = i.useDate == href.date ? 'active' : '';
+					obj[parseInt(i.useDate.split('-')[2])] = i;
+				});
+
+				var str = arr.map(function(i,idx){
+
+					var res = tpl1.replace(/\{\{id\}\}/g,i);
+					var item = obj[i];
+					res = res.replace(/\{\{val\}\}/g, item ? tpl2.replace(/\{\{([\w\W]*?)\}\}/gi, function(a, b) {
+						return item[b];
+					}) : '' );
+
+					if(idx !== 0 && idx%7 == 0){res = '</tr><tr>' + res}
+					return res;
+				}).join('');
+
+				str = '<tr>' + str + '</tr>';
+
+				document.querySelector('.booking_date tbody').innerHTML = str;
+
+
+				elem = document.querySelector('.booking_date table a.active') || document.querySelector('.booking_date table a');
+
+				// 触发第一个选中
+				if(elem){
+					mui.trigger(elem,'tap');
+					document.querySelector('.booking_number').style.display = 'block';
+				}else{
+					document.querySelector('.booking_number').style.display = 'none';
+					document.querySelector('.line_ctrl_next').classList.add('disabled');
+				}
+
+
+				document.querySelector('.loading').classList.add('end');
+			});
+
+
+
+		}
+
+		var count = function(){
+			var box = document.getElementById('template');
+			var list = box.querySelectorAll('li');
+			var enable = false;
+			line_booking.total = 0; // 总价格
+			line_booking.number = 0; // 总人数
+
+			Array.prototype.slice.call(list,0).map(function(i){
+
+				var count = parseInt(i.querySelector('cite span').innerText);
+				var idx = i.getAttribute('index');
+				var obj = line_booking.price[idx];
+
+
+				line_booking.total += count * parseFloat(obj.price);
+				line_booking.number += count;
+				
+				obj.count = count;
+
+				// 成人，老人，老人2必须大于1人
+				enable = obj.productFormatId == 1 && count >0 || enable;
+				enable = obj.productFormatId == 2 && count >0 || enable;
+				enable = obj.productFormatId == 6 && count >0 || enable;
+			});
+
+			// 团期
+			var active = document.querySelector('.booking_date table td.active a');
+
+			// 保存游客信息
+			localStorage.setItem('line_booking',JSON.stringify(line_booking));
+			total.innerHTML = '￥' + parseInt(line_booking.total*100)/100;
+
+			// 下一步
+			if(enable){
+				thenext.className = 'line_ctrl_next';
+			}else{
+				thenext.className = 'line_ctrl_next disabled';
+			}
+
+		}
+
+
+
+		!function(u){
+			// 如果是android，直接滚动,如果ios，加效果
+			if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+				mui.init({
+					pullRefresh: {
+						container: '#container',
+						down: {
+							contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+							contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+							contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+						},
+						up: {
+							contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+							contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+							callback: function(){} //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+						}
+					}
+				});
+			}
+		}(navigator.userAgent);
+
+
+
+		// 上个月
+		mui('body').on('tap','a.js-date-prex',function(){
+			date.setMonth(date.getMonth()-1);
+			getTomonth(date);
+			return false;
+		});
+
+		// 下个月
+		mui('body').on('tap','a.js-date-next',function(){			
+			date.setMonth(date.getMonth()+1);
+			getTomonth(date);
+			return false;
+		});
+
+
+		// 减少人数
+		mui('body').on('tap','.booking_number button.minus',function(){
+
+			var parent = this.parentNode;
+			var elem = parent.querySelector('span');
+			var val = parseInt(elem.innerHTML);
+			elem.innerHTML = val <1 ? 0 : val -1 ;
+			count();
+			return false;
+		});
+
+
+		// 增加人数
+		mui('body').on('tap','.booking_number button.plus',function(){
+
+			var parent = this.parentNode;
+			var elem = parent.querySelector('span');
+			var val = parseInt(elem.innerHTML);
+			elem.innerHTML = val +1;
+			count();
+			return false;
+		});
+
+
+		// 点击选择日期
+		mui('.booking_date').on('tap','table a',function(){
+			var parent = this.parentNode;
+			var acti = table.querySelector('.active');
+			
+			if(acti == parent){return}
+
+			parent.classList.add('active');
+			acti && acti.classList.remove('active');
+
+			line_booking.sellPriceListId = this.getAttribute('sellpricelistid');
+			line_booking.sellPriceId = this.getAttribute('sellPriceId');
+			line_booking.useDate = this.getAttribute('useDate');
+
+
+			// 6.22 获取产品价格表
+			service({
+				"type" : "getLinePriceByDay",
+				"sellPriceListId": this.getAttribute('sellpricelistid')
+			},function(json){
+
+				// 线路价格
+				line_booking.price = json.data.touristPriceList;
+
+
+				// 排序
+				json.data.touristPriceList.map(function(i,idx){i.idx = idx});
+
+				window.tplExchange(document.getElementById('template'),json.data,!json.ret);
+				// 触发计算
+				mui.trigger(document.querySelector('.booking_number_type1 .plus'),'tap');
+
+				var line_info = JSON.parse(localStorage.getItem('line_info') || '{}');
+				line_info.businessUnitId = json.data.businessUnitId;
+				localStorage.setItem('line_info',JSON.stringify(line_info));
+			});
+
+
+			return false;
+		});
+
+
+		// 下一步
+		mui('body').on('tap','.line_ctrl_next a',function(){
+
+			var home = plus.webview.getLaunchWebview();
+
+
+			if(this.parentNode.classList.contains('disabled')){return false;}
+
+			// 未登陆
+			if(!localStorage.getItem('token')){
+				plus.ui.toast('请先登陆');
+				home && mui.fire(home, 'openFull', {viewId : 'login',href:'login.html'});
+				return false;
+			}
+
+
+			// 先绑定管家
+			if(!localStorage.getItem('user_keeper')){
+				plus.ui.toast('请先绑定管家');
+				home && mui.fire(home, 'openFull', {viewId : 'keeper',href:'keeper.html'});
+				return false;
+			}
+
+
+		});
+
+
+
+		// 初始化
+		// 清空用户数据 
+		localStorage.setItem('line_select','[]');
+		localStorage.setItem('line_booking','[]');
+		getTomonth(date);
+
+
+
+	</script>
+
+	
+
+
+	
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>附加服务</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	
+
+	<form class="additioal" id="template">
+
+
+		<ul class="additioal_checkbox" >
+			<li class="visa">
+				<label class="includeVisa">
+					<input type="checkbox" name="hasVisa" {{visa}} >
+					<h3>已有签证</h3>
+					<p>如您已有赴目的地签证，办理费用将从团费中减免</p>
+					<span><em>- {{moneyNoVisa}}元</em></span>
+				</label>
+			</li>
+			<li class="singleroom">
+				<label>
+					<input type="checkbox" name="needSingleRoom" {{singleroom}} >
+					<h3>单独房间</h3>
+					<p>您可以享用单独的一个房间</p>
+					<span><em>+ {{moneySingleRoom}}元</em></span>
+				</label>
+			</li>
+		</ul>
+
+		<div class="additioal_remark">
+			<textarea placeholder="备注:200字内" name="remark">{{remark}}</textarea>
+		</div>
+
+
+		<div class="additioal_submit"><button type="submit">确定</button></div>				
+	</form>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var thisobj = {} 
+		var line_select = JSON.parse(localStorage.getItem('line_select') || '[]');
+		var line_booking = JSON.parse(localStorage.getItem('line_booking') || '{}');
+
+		// 取当前用户信息
+		line_select.map(function(i){if(href.id == i.id){thisobj = i;}});
+		thisobj.serviceAdditional = thisobj.serviceAdditional || {};
+
+		// 附加服务
+		service({
+			"type" : "getAdditional",
+			"sellPriceListId":line_booking.sellPriceListId
+		},function(json){
+
+			if(json.ret){
+				// 是否选中，还原内容
+				json.data.visa = thisobj.serviceAdditional.hasVisa == 1 ? 'checked' : '';
+				json.data.singleroom = thisobj.serviceAdditional.needSingleRoom == 1 ? 'checked' : '';
+				json.data.remark = thisobj.remark || '';
+
+			}else{
+				return false;
+			}
+
+
+
+			// 签证费用
+			thisobj.serviceAdditional.visaPrice = - parseFloat(json.data.moneyNoVisa);
+
+			// 单房费用
+			thisobj.serviceAdditional.singleRoomPrice = parseFloat(json.data.moneySingleRoom);
+
+
+			if(!json.data.moneySingleRoom){
+				document.querySelector('.singleroom').style.display = 'none';
+			}
+			if(json.data.includeVisa == 2){
+				document.querySelector('.visa').style.display = 'none';
+			}
+
+			window.tplExchange(document.getElementById('template'),json.data,!json.ret);
+			document.querySelector('.loading').style.display = 'none';
+
+		});
+
+
+		mui('body').on('submit','form',function(){
+
+
+			var form = window.serialize(this);
+			var enable = !!(form.hasVisa || form.needSingleRoom || form.remark); // 有效服务
+
+			// 签证
+			thisobj.serviceAdditional.hasVisa = form.hasVisa ? 1 : 2;
+
+			// 单房
+			thisobj.serviceAdditional.needSingleRoom = form.needSingleRoom ? 1 : 2;
+
+			// 备注
+			thisobj.remark = form.remark;
+
+
+			localStorage.setItem('line_select',JSON.stringify(line_select));
+
+
+			// 触发事件
+			mui.fire(plus.webview.getWebviewById('line_write'),'additionalChange',{enable:enable,uid:thisobj.id});
+			mui.fire(plus.webview.currentWebview().parent(),'back');
+			return false;
+		});
+
+
+
+
+
+	</script>	
+	
+</body>
+</html>

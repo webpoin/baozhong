@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		.mui-pull-bottom-pocket{display: none;}
+		
+	</style>
+	<title>Document</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	<section class="contacts contacts2 template" id="template">
+		<h2>常旅资料(共计{{total}}人)</h2>
+		<ul>
+			<li subdata="{{data}}">
+				<h3>{{name}} <b class="show_{{sex}}"></b></h3>
+				<p><b class="show_{{mobile}}">手机:{{mobile}}</b> <b class="show_{{birthday}}">生日:{{birthday}}</b></p>
+				<span><a href="header.html?title=编辑游客信息&url=user_contacts_add&id={{id}}"><i class="icon icon-xyj"></i></a></span>
+			</li>
+		</ul>
+	</section>
+
+	<a class="btn_submit" href="header.html?title=添加常用游客&url=user_contacts_add">添加常用游客</a>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		service({
+			"type" : "getUserContacts",
+		    "start": 0,
+		    "limit": 10
+		},function(json){
+			window.tplExchange(document.getElementById('template'),json,!json.ret);
+			document.querySelector('.loading').classList.add('end');
+		});
+
+	</script>
+
+</body>
+</html>

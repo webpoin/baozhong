@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+</head>
+<body>
+
+	<section class="user_header">
+		<div class="img"><img src="../images/user_header.jpg" ></div>
+		<div id="user">
+			<h2><a href="header.html?title=我的信息&url=user_info"><img data-src="{{imageUrl}}" ></a></h2>
+			<h3>{{nickname}} <i class="icon icon-xingzhuang222"></i></h3>
+			<p>{{mobile}}</p>
+		</div>
+	</section>
+
+
+	<section class="user">
+		<ul>
+			<li>
+				<a href="header.html?title=我的订单&url=user_order">
+					<i class="icon icon-dingdan"></i>
+					<strong>我的订单</strong>
+					<!-- <span>24</span> -->
+				</a>
+			</li>
+			<li>
+				<a href="header.html?title=我的收藏&url=user_collect">
+					<i class="icon icon-shoucang"></i>
+					<strong>我的收藏</strong>
+					<!-- <span>24</span> -->
+				</a>
+			</li>
+			<li>
+				<a href="header.html?title=我的优惠券&url=user_coupon">
+					<i class="icon icon-youhuiquan"></i>
+					<strong>我的优惠券</strong>
+					<!-- <span>4</span> -->
+				</a>
+			</li>
+			<li>
+				<a href="header.html?title=我的联系人&url=user_contacts">
+					<i class="icon icon-wodelianxiren"></i>
+					<strong>我的联系人</strong>
+					<!-- <span>8</span> -->
+				</a>
+			</li>
+			<li>
+				<a href="keeper.html">
+					<i class="icon icon-guanjia"></i>
+					<strong>我的管家</strong>
+					<p id="keeper" class="template"><span >{{clientPeerName}}——{{sellUserName}}</span></p>
+				</a>
+			</li>
+			<li>
+				<a href="password.html">
+					<i class="icon icon-mima"></i>
+					<strong>修改密码</strong>
+				</a>
+			</li>
+			<li>
+				<a href="login.html">
+					<i class="icon icon-tuichuzhanghao"></i>
+					<strong>退出账号</strong>
+				</a>
+			</li>
+
+		</ul>
+	</section>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		// 6.37 获取简单个人信息
+		service("user",function(json){
+			var template = document.getElementById('user');
+			window.tplExchange(template,json.data,!json.ret);
+		});
+
+		// 6.3 获取“我的管家”
+		service("keeper",function(json){
+			var template = document.getElementById('keeper');
+			window.tplExchange(template,json.data,!json.ret);
+		});
+
+
+		mui.init({swipeBack: false});
+
+		// 链接点击事件
+		mui('body').on('tap','a',function(){
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {href: this.getAttribute('href')});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+
+
+
+	</script>
+
+
+	
+</body>
+</html>

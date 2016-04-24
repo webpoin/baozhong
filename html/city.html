@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		#container{position: absolute;bottom: 0;top: 64px;width: 100%;overflow: auto;}
+		#container .scroll{position: absolute;left: 0;top: 0;}
+		.mui-pull-bottom-pocket{display: none;}
+	</style>
+	<title>选择出发城市</title>
+</head>
+<body>
+
+	<div class="loading"><img src="../images/loading.gif" alt=""></div>
+
+
+	<header>
+		<h2>选择出发城市</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+		<span class="determine" style="display: block;">确定</span>
+	</header>
+
+
+	<div class="pullRefresh link" id="container" >
+		
+		<section class="city" id="template">
+
+			<dl>
+				<dt><strong>当前定位城市</strong><span><i class="icon icon-disclosure"></i></span></dt>
+				<dd><a class="city_location" data="2224"><i class="icon icon-xingzhuang25"></i>深圳</a></dd>
+			</dl>
+
+		
+			<!-- 热门城市 BEGIN -->
+			<dl>
+				<dt><strong>热门城市</strong><span><i class="icon icon-disclosure"></i></span></dt>
+			    <dd >
+					<a subdata="{{hot}}" href="{{id}}">{{name}}</a>
+			    </dd>
+			</dl>
+			<!-- 热门城市 END -->
+
+			<!-- 拼音列表 BEGIN -->
+			<dl>
+				<dt><strong>快速定位</strong><span><i class="icon icon-disclosure"></i></span></dt>
+			    <dd class="js-guid">
+					<a href="A">A</a>
+					<a href="B">B</a>
+					<a href="C">C</a>
+					<a href="D">D</a>
+					<a href="F">F</a>
+					<a href="G">G</a>
+					<a href="H">H</a>
+					<a href="J">J</a>
+					<a href="K">K</a>
+					<a href="L">L</a>
+					<a href="M">M</a>
+					<a href="N">N</a>
+					<a href="P">P</a>
+					<a href="Q">Q</a>
+					<a href="R">R</a>
+					<a href="S">S</a>
+					<a href="T">T</a>
+					<a href="W">W</a>
+					<a href="X">X</a>
+					<a href="Y">Y</a>
+					<a href="Z">Z</a>
+				</dd>
+			</dl>
+			<!-- 拼音列表 END -->
+
+			<dl subdata="{{pinyin}}" id="{{key}}">
+				<dt><strong>{{key}}</strong><span><i class="icon icon-disclosure"></i></span></dt>
+				<dd>
+					<a subdata="{{value}}" href="{{id}}">{{name}}</a>
+				</dd>
+			</dl>
+
+
+		</section>
+
+	</div>
+
+
+
+
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/iscroll-lite.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+
+		href.title && (document.querySelector('header h2').innerHTML = href.title);
+
+		!function(u){
+			// 如果是android，重写滚动
+			if(u.indexOf('Android') > -1 || u.indexOf('Adr') > -1){
+				IScroll = function (id){
+					console.log(id)
+					var elem = document.querySelector(id);
+
+					this.refresh = function(){};
+					this.scrollTo = function(a,b,c){elem.scrollTop = -b;}
+				}
+			}
+		}(navigator.userAgent)
+
+
+		var scroll = new IScroll('#container',{mouseWheel: false,scrollbars: false});
+
+
+
+		// 6.1 查找收客区域[城市]
+		service({
+			"type" : "getCity",
+			// "hot":1,//空=全部，1=非热门，大于1的=热门，数字越大表示越热门
+			"start":0,
+			"limit":10
+		},function(json){
+
+			var pinyin = {}
+			var tmp = [];
+
+			// 数据
+			var data = {hot:[],pinyin:[]}
+			json.data.map(function(i){
+				var key = i.pinyin.substr(0,1).toLocaleUpperCase();
+				// 热门
+				if(i.hot>0){data.hot.push(i)}
+
+				if(pinyin[key]){
+					pinyin[key].push(i);
+				}else{
+					pinyin[key] = [i];
+					tmp.push(key);
+				}
+			});
+
+			tmp.sort().map(function(i){data.pinyin.push({key:i,value:pinyin[i]});});
+
+			// 替换模板
+			window.tplExchange(document.getElementById('template'),data,!json.ret);
+
+			// 关闭正在加载
+			document.querySelector('.loading').classList.add('end');
+
+
+			href.city = '深圳';
+
+			Array.prototype.slice.call(document.links,0).map(function(i){
+
+				if(i.innerHTML == href.city){
+					i.classList.add('active');
+					i.innerHTML = i.innerText + '<span><i class="icon icon-xingzhuang265"></i></span>';
+				}
+			});
+
+			document.querySelector('.city_location').setAttribute('data',href.city);
+			scroll.refresh();
+		});
+
+
+		// 收缩菜单
+		mui('.city').on('tap','dt',function(){
+			var parent = this.parentNode;
+			if(parent.classList.contains('hide')){
+				parent.classList.remove('hide')
+			}else{
+				parent.classList.add('hide');
+			}
+			scroll.refresh();
+
+		});
+
+		// 点击内容
+		mui('.city').on('tap','dd a',function(){
+
+
+			var city_location = document.querySelector('.city_location');
+			var determine = document.querySelector('.determine');
+			var text = this.innerText;
+
+			if(this.parentNode.classList.contains('js-guid')){
+
+				var id = this.getAttribute('href');
+				var elem = document.getElementById(id);
+
+				if(elem){
+					var totop = elem.offsetTop;
+					scroll.scrollTo(0, - totop,10);
+
+					// console.log(111)
+				}
+				
+				return false;
+			}
+			if(this.classList.contains('city_location')){return false;}
+
+
+			Array.prototype.slice.call(document.querySelectorAll('.city dd a')).map(function(i){
+				if(i.innerText == text){
+					i.classList.add('active');
+					i.innerHTML = i.innerText + '<span><i class="icon icon-xingzhuang265"></i></span>';
+				}else{
+					i.classList.remove('active');
+				}
+			});
+
+
+			city_location.innerHTML = '<i class="icon icon-xingzhuang25"></i>' +text;
+
+			city_location.setAttribute('data',this.getAttribute('href'));
+
+			// if(city_location.getAttribute('data') == text){
+			// 	determine.style.display = 'none';
+			// }else{
+			// 	determine.style.display = 'block';
+
+			// }
+
+			return false;
+		});
+
+		// 点击确定
+		mui('body').on('tap','.determine',function(){
+
+			var elem = document.querySelector('.city_location');
+			var value = elem.innerText;
+			var id = elem.getAttribute('data');
+
+			localStorage.setItem('user_city',value);
+			mui.fire(plus.webview.getLaunchWebview(),'selectCity',{value:value,id:id});
+			mui.fire(plus.webview.getWebviewById('sort_list'),'selectCity',{value:value,id:id});
+			mui.back();
+			return false;
+		});
+
+
+	</script>
+	
+</body>
+</html>

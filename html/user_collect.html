@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+
+	<div class="nodata">
+		<i class="icon icon-p-noclass" ></i>
+		<p>暂无收藏记录</p>
+	</div>
+
+
+	<div class="pullRefresh" id="container">
+		<div class="collect">
+			<ul id="template" class="template">
+				<li>
+					<a href="line.html?productId={{productId}}&supplierId={{supplierId}}">
+						<div class="collect_img">
+							<img data-src="{{lineImageUrl}}" alt="">
+							<span>{{startingName}}出发</span>
+						</div>
+						<div class="collect_tle">
+							<h2>{{name}}{{lineNameRemark}}</h2>
+							<div class="collect_price"><i>￥</i>{{minPrice}}<small>起</small></div>
+							<p>天数: {{days}}天</p>
+							<p>团期: <b subdata="{{recentUseDate}}">{{0}}</b></p>
+							<div class="collect_tag"><span class="recom{{0}}" subdata="{{tagIdList}}"></span></div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var content = document.getElementById('template');
+		var nodata = document.querySelector('.nodata');
+		var limit = 10;
+		var start = 0;
+
+		// 刷新
+		var refresh = function(){
+			start = 0;
+			service({
+				"type" : "getUserCollect",
+			    "start": start,
+			    "limit": limit
+			},function(json){
+
+				window.tplExchange(content,json.data,!json.ret);
+				mui('#container').pullRefresh().endPulldownToRefresh(true);
+
+				// 条数小于limit条，则禁用,如果多于或等于limit，则显示
+				if(json.data.length ==0){
+					nodata.style.display = 'block';
+				}else if(json.data.length < limit){
+					mui('#container').pullRefresh().disablePullupToRefresh();
+					nodata.style.display = 'none';
+				}else{
+					mui('#container').pullRefresh().enablePullupToRefresh();
+					nodata.style.display = 'none';
+				}
+
+				document.querySelector('.loading').classList.add('end');
+
+			});
+		}
+
+		// 下拉加载
+		var loadmore = function(){
+			var that = this;
+			start += limit;
+			service({
+				"type" : "getUserCollect",
+			    "start": start,
+			    "limit": limit
+			},function(json){
+
+				window.tplExchange(content,json.data,!json.ret,true);
+				that.endPullupToRefresh(json.data.length < limit);
+
+			});
+		}
+
+		mui.init({
+			pullRefresh: {
+				container: '#container',
+				down: {
+					contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+					callback: refresh
+				},
+				up: {
+					contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+					contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+					callback: loadmore //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				}
+			}
+		});
+
+		refresh();
+
+
+
+
+	</script>
+	
+</body>
+</html>

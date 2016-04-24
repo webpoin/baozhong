@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+	<style type="text/css">
+		body{background:url(../images/login_bkg.jpg) no-repeat center bottom; }
+		.call{background-color: transparent;}
+	</style>
+</head>
+<body>
+
+
+	<section class="call" id="keeper">
+		
+		<img src="../images/call_pic.jpg" alt="">
+		<a class="btn" href="tel:{{mobile}}"><i class="icon icon-xingzhuang94"></i>拨号</a>
+		<h3>{{clientPeerName}} -- {{sellUserName}}</h3>
+		<p>{{address}}<br>{{mobile}}</p>
+		<a href="keeper.html" class="link"><i class="icon icon-qiehuan"></i>切换管家</a>
+	</section>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		// 6.3 获取“我的管家”
+		service("keeper",function(json){
+			var template = document.getElementById('keeper');
+			window.tplExchange(template,json.data,!json.ret);
+		});
+
+		// 链接点击事件
+		mui('body').on('tap','a.link',function(){
+
+			var href = this.getAttribute('href');
+			if(!href){return;}
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {href: this.getAttribute('href'),});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+	</script>
+</body>
+</html>

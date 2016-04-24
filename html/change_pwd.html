@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>password</title>
+	<style type="text/css">body{background:url(../images/login_bkg.jpg) no-repeat center center; }</style>
+</head>
+<body>
+
+
+	<header class="login_header">
+		<h2>修改密码</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+	</header>
+
+	<form action="#" class="login">
+		<cite>
+			<label class="previewpassword">
+				<span><i class="icon icon-mima"></i></span>
+				<input type="password" placeholder="请输入您的旧密码" name="oldPwd" value="">
+				<em><i class="icon icon-xingzhuang42"></i></em>
+			</label>
+			<label class="previewpassword">
+				<span><i class="icon icon-mima"></i></span>
+				<input type="password" placeholder="请输入您的新密码" name="newPwd" value="">
+				<em><i class="icon icon-xingzhuang42"></i></em>
+			</label>
+			<label class="previewpassword">
+				<span><i class="icon icon-mima"></i></span>
+				<input type="password" placeholder="请再次输入您的新密码" name="checkpassword" value="">
+				<em><i class="icon icon-xingzhuang42"></i></em>
+			</label>
+		</cite>
+		<p class="login_note"><i class="icon icon-xingzhuang263"></i>提示：如需要帮助，请联系您的私旅管家</p>
+
+		<a class="button1 submit disabled">修改密码</a>
+
+
+	</form>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var form = document.forms[0]
+		var submit = form.querySelector('.submit');
+
+		// 文字输入
+		mui('body').on('keyup','input',function(){
+
+			var data = window.serialize(form);
+			var disabled = false;
+
+			if(!data.oldPwd){disabled = true;}
+			if(!data.newPwd){disabled = true;}
+			if(data.newPwd !== data.checkpassword){disabled = true;}
+
+			if(disabled){
+				submit.classList.add('disabled');
+			}else{
+				submit.classList.remove('disabled');
+			}
+
+		});
+
+
+		// 表单提交
+		mui('body').on('tap','.button1',function(){
+
+			var data = window.serialize(form);
+			data.type = 'changePassword';
+			if(submit.classList.contains('disabled')){
+
+				if(!data.oldPwd){
+					plus.ui.toast('旧密码不能为空');
+					return false;
+				}
+				if(!data.newPwd){
+					plus.ui.toast('新密码不能为空');
+					return false;
+				}
+				if(data.newPwd !== data.checkpassword){
+					plus.ui.toast('两次新密码输入不一致');
+					return false;
+				}
+
+
+				return false;
+
+			}
+
+			// 禁止重复提交
+			submit.classList.add('disabled');
+
+			service(data,function(json){
+
+				// 如果正确
+				if(json.ret){
+
+					localStorage.setItem('token','');
+
+					// 则重新登陆
+					mui.fire(plus.webview.getLaunchWebview(),'openFull', {href:'login.html',viewId:'login'})
+
+					setTimeout(function(){
+
+						// 关闭此层
+						mui.back();
+						// 首页重载
+						plus.webview.getLaunchWebview().reload();
+					},500);
+					
+				}else{
+					// 弹出错误信息
+					plus.ui.toast(json.msg);
+					submit.classList.remove('disabled');
+				}				
+			});
+			return false;
+		});
+
+
+
+		// 查看密码
+		mui('body').on('tap','.previewpassword em',function(){
+			var input = this.parentNode.querySelector('input');
+			var type = input.getAttribute('type');
+
+			if(!this.classList.contains('active')){
+				input.setAttribute('type','text');
+				this.classList.add('active');
+			}else{
+				input.setAttribute('type','password');
+				this.classList.remove('active');
+			}
+			return false;
+		});
+
+
+
+
+	</script>
+	
+</body>
+</html>

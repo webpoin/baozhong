@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+	<style type="text/css">
+		#container{margin-top: 40px;width: 100%;}
+		/*#container{position: absolute;bottom: 0;top: 40px;width: 100%;overflow: auto;}*/
+		/*#container .scroll{position: absolute;left: 0;top: 0;}*/
+		.template{min-height: 100%;}
+		.loading{top: 40px;}
+		.nodata{top: 40px;}
+	</style>
+</head>
+<body>
+	
+	<div class="loading"><img src="../images/loading.gif" alt=""></div>
+
+	<section class="sort_filter" >
+		<dl >
+			<dt><a href="sort_destina"><strong>切换目的地</strong><i class="icon icon-jiantou"></i></a></dt>
+			<dd class="sort_destina" >
+				<h3 id="destine_side">
+					<a href="{{id}}">{{name}}</a>
+				</h3>
+				<div id="destine_main">
+					<cite id="{{id}}"><ul><li subdata="{{themeList}}"><a subdata="{{destList}}" href="header.html?title={{name}}&url=destine_list&id={{id}}"><span>{{name}}</span></a></li></ul></cite>
+				</div>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><a href="sort_time"><strong>时间天数</strong><i class="icon icon-jiantou"></i></a></dt>
+			<dd class="sort_time">
+				<p>
+					<span>出发日期:</span>
+					<label>
+						<input type="text" value="" class="sort_date" readonly="readonly" id="useDateStart">
+						<i class="icon icon-kaishi"></i>
+						</label>
+					<b>~</b>
+					<label>
+						<input type="text" value="" class="sort_date" readonly="readonly" id="useDateEnd">
+						<i class="icon icon-jieshu"></i>
+					</label>
+				</p>
+				<p>
+					<span>行程天数：</span>
+					<input type="text" value="1-10+" id="days" readonly="readonly"> 天
+					<cite>
+						<strong id="slider">
+							<b style="width: 0%;left: 0%;"></b>
+							<i style="left:0%;"></i>
+							<i style="left:0%;"></i>
+						</strong>
+						<small>
+							<em>1</em>
+							<em>2</em>
+							<em>3</em>
+							<em>4</em>
+							<em>5</em>
+							<em>6</em>
+							<em>7</em>
+							<em>8</em>
+							<em>9</em>
+							<em>10+</em>
+						</small>
+						
+					</cite>
+				</p>
+
+				<a href="#" class="btn">确定</a>
+				
+			</dd>
+		</dl>
+
+		<dl class="active">
+			<dt><a href="sort_order"><strong>筛选</strong><i class="icon icon-jiantou"></i></a></dt>
+			<dd class="sort_order">
+				<h3>
+					<span>出 发 地:</span>
+					<a href="city.html?city=深圳"><i class="icon icon-xingzhuang25"></i><b>深圳</b></a>
+					<i class="icon icon-disclosure"></i>
+				</h3>
+				<p>
+					<a href="orderByMinPrice"><span><i class="icon icon-xingzhuang216"></i>价格最低开始排序↑</span></a>
+					<a href="orderByMinPriceAsc"><span><i class="icon icon-xingzhuang217"></i>价格最高开始排序↓</span></a>
+					<a href="orderByUseDate" class="active"><span><i class="icon icon-xingzhuang218"></i>最近的出发日期排序↑</span></a>
+					<a href="orderByUseDateAsc"><span><i class="icon icon-xingzhuang218"></i>最远的出发日期排序↓</span></a>
+					<a href="orderByDays"><span><i class="icon icon-yuanjiaojuxing22kaobei"></i>最少的行程天数排序↑</span></a>
+					<a href="orderByDaysAsc"><span><i class="icon icon-yuanjiaojuxing22kaobei"></i>最多的行程天数排序↓</span></a>
+				</p>
+
+			</dd>	
+		</dl>
+
+		<div class="sort_filter_bkg"></div>
+
+	</section>
+
+
+	<div class="nodata">
+		<i class="icon icon-p-noclass" ></i>
+		<p>暂无记录</p>
+	</div>
+
+	<div class="pullRefresh" id="container">
+
+		<div class="collect link" >
+			<ul id="template" class="template">
+				<li>
+					<a href="line.html?productId={{productId}}&supplierId={{supplierId}}">
+						<div class="collect_img">
+							<img data-src="{{lineImageUrl}}" alt="">
+							<span>{{startingName}}出发</span>
+						</div>
+						<div class="collect_tle">
+							<h2>{{name}}{{lineNameRemark}}</h2>
+							<div class="collect_price"><i>￥</i>{{minPrice}}<small>起</small></div>
+							<p>天数: {{days}}天</p>
+							<p>团期: <b subdata="{{recentUseDate}}">{{0}}</b></p>
+							<div class="collect_tag"><span class="recom{{0}}" subdata="{{tagIdList}}"></span></div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var href = (function(l){
+			var p={};
+			return l.replace(/([^?&=]+)=([^?&=]+)/ig,function(a,b,c){p[b]=c;}),p;
+		})(decodeURI(location.href));
+
+		var limit = 10; // 每次加载的条数
+
+		var content = document.getElementById('template');
+		var nodata = document.querySelector('.nodata');
+
+		var req = {
+			"type" : "getSort",
+			"lineCategoryId": href.lineCategoryId,
+			"start": 1,
+			"limit": limit,
+			"startingName" : localStorage.getItem('user_city')
+			// "lineName" : "",
+			// "destinationId": "",
+			// "orderByMinPrice": "",
+			// "orderByMinPriceAsc": "",
+			// "orderByUseDate": "",
+			// "orderByUseDateAsc": "",
+			// "orderByDays": "",
+			// "orderByDaysAsc": "",
+			// "daysStart" : '',
+			// "daysEnd" : '',
+			// "useDateStart" : '',
+			// "useDateEnd" : '',
+			// "startingId" : localStorage.getItem('startingCityId') || '2224'
+		}
+
+		// 出发城市
+		// if(localStorage.getItem('startingCityId')){req.startingId = localStorage.getItem('startingCityId')}
+
+		
+
+		// 刷新
+		var refresh = function(){
+			req.start = 0;
+			service(req,function(json){
+
+				window.tplExchange(content,json.data,!json.ret);
+
+
+				mui('#container').pullRefresh().endPulldownToRefresh(true);
+
+				// 条数小于limit条，则禁用,如果多于或等于limit，则显示
+				if(json.data.length ==0){
+					nodata.style.display = 'block';
+				}else if(json.data.length < req.limit){
+					mui('#container').pullRefresh().disablePullupToRefresh();
+					nodata.style.display = 'none';
+				}else{
+					mui('#container').pullRefresh().enablePullupToRefresh();
+					nodata.style.display = 'none';
+				}
+
+				// 关闭正在加载
+				document.querySelector('.loading').classList.add('end');
+			});
+
+
+		}
+
+
+		// 下拉加载
+		var loadmore = function(){
+			var that = this;
+			req.start += limit;
+			service(req,function(json){
+				window.tplExchange(content,json.data,!json.ret,true);
+				that.endPullupToRefresh(json.data.length < req.limit);
+			});
+		}
+
+
+		mui.init({
+			pullRefresh: {
+				container: '#container',
+				down: {
+					contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+					callback: refresh
+				},
+				up: {
+					contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+					contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+					callback: loadmore //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+				}
+			}
+		});
+
+		// 6.34 查找分类目的地
+		service({
+			"type" : "getGoal",
+			"start":0,
+			"limit":10
+		},function(json){
+
+			// 替换模板
+			var template_side = document.getElementById('destine_side');
+			var template_main = document.getElementById('destine_main');
+			window.tplExchange(template_side,json.data,!json.ret);
+			window.tplExchange(template_main,json.data,!json.ret);
+			
+			var elem = document.querySelector('#destine_side a');
+			elem && mui.trigger(elem,'tap');
+			// mui.trigger(document.querySelector('#destine_main a'),'tap');
+		});
+
+
+		// 筛选tab点击事件
+		mui('.sort_filter').on('tap','dt',function(){
+			var dl = this.closest('dl');
+
+			if(dl.classList.contains('active')){
+				dl.classList.remove('active');
+			}else{
+				var acti = document.querySelector('.sort_filter dl.active');
+				acti && acti.classList.remove('active');
+				dl.classList.add('active');
+			}
+			return false;
+		});
+
+
+		// 目的地侧边点击事件
+		mui('.sort_destina').on('tap','h3 a',function(){
+
+			var acti = this.parentNode.querySelector('a.active');
+			if(acti == this){return false;}
+
+			acti && acti.classList.remove('active');
+			this.classList.add('active');
+
+
+			var id = this.getAttribute('href');
+			var item = document.getElementById(id);
+			var acti2 = item.parentNode.querySelector('cite.active');
+			var tpl = '<ul><li subdata="{{destList}}"><a href="header.html?title={{name}}&url=destine_list&id={{id}}"><span>{{name}}</span></a></li></ul>';
+
+			if(!item.innerText){
+
+				var req = {
+					"type" : "getDestine",
+					"lineDestCategoryId" : id
+				}
+
+				if(id == 2){
+					req.type = 'getDestineNearby';
+					// req.areaId = '2224';
+					req.countryName = '中国';
+					req.cityName = localStorage.getItem('user_city') || '深圳';
+				}
+
+				service(req,function(json){
+					item.innerHTML = window.tplEngine(json.data,tpl);
+					acti2 && acti2.classList.remove('active');
+					item.classList.add('active');
+
+				});
+			}else{
+				acti2 && acti2.classList.remove('active');
+				item.classList.add('active');
+			}
+
+			return false;
+		});
+
+		// 目的地内容点击事件
+		mui('.sort_destina').on('tap','ul a',function(){
+			// var acti = document.querySelector('.sort_destina ul a.active');
+			// if(acti == this){return false;}
+
+
+			// acti && acti.classList.remove('active');
+			// this.classList.add('active');
+
+			// this.closest('dl').classList.remove('active');
+			// req.destinationId = this.getAttribute('href');
+
+
+			// refresh();
+			// return false;
+			this.closest('dl').classList.remove('active');
+		});
+
+		document.querySelector('.sort_filter').ontouchstart = function(event){
+			event.preventDefault();
+		}
+
+
+
+		// 排序点击事件
+		mui('.sort_order').on('tap','p a',function(){
+			var acti = this.parentNode.querySelector('a.active');
+			var href = this.getAttribute('href');
+			var arr = ["orderByMinPrice" ,"orderByMinPriceAsc" ,"orderByUseDate" ,"orderByUseDateAsc" ,"orderByDays" ,"orderByDaysAsc" ];
+
+			if(acti == this){return false;}
+
+			acti && acti.classList.remove('active');
+			this.classList.add('active');
+
+			arr.map(function(i){req[i] = i == href ? 1 : 2;});
+
+			this.closest('dl').classList.remove('active');
+			refresh();
+			return false;
+		});
+
+		// 时间点击确认事件
+		mui('.sort_time').on('tap','a.btn',function(){
+			
+			this.closest('dl').classList.remove('active');
+
+
+			var useDateStart = document.getElementById('useDateStart').value;
+			var useDateEnd = document.getElementById('useDateEnd').value;
+			useDateStart && (req.useDateStart = useDateStart);
+			useDateEnd && (req.useDateEnd = useDateEnd);
+
+			// req.days = document.getElementById('days').value;
+
+			refresh();
+			return false;
+		});
+
+
+		// 选择日期
+		mui('body').on('tap','.sort_date',function(){
+
+			var that = this;
+			var today = new Date();
+			var minDate = new Date();
+			var maxDate = (new Date()).setFullYear(2100, 12, 31);
+
+			if(this.value){
+				var val = this.value.split('-');
+				today.setFullYear(val[0]||today.getFullYear(),val[1] ? val[1]-1 : today.getMonth(),val[2]||today.getDate());
+			}
+
+			plus.nativeUI.pickDate(function(e) {
+				var d = e.date;
+				that.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+				mui.trigger(that,'change');
+			}, function(e) {
+				// that.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+			}, {
+				title: "请选择日期",
+				date: today,
+				minDate: minDate,
+			});
+
+
+		});
+
+		// 更改出发地
+		mui('body').on('tap','.sort_time h3 a',function(){
+
+			var href = this.getAttribute('href');
+			this.setAttribute('href',href+'&parentview='+plus.webview.currentWebview().id);
+
+		});
+
+
+
+		// 更改出发城市
+		window.addEventListener('selectCity',function(event){
+			var elem = document.querySelector(".sort_order h3 a");
+			var name = localStorage.getItem('user_city')
+			elem.setAttribute('href','city.html?city='+name);
+			elem.querySelector('b').innerHTML = name;
+			elem.closest('dl').classList.remove('active');
+			refresh();
+		});
+
+
+		// 初始化出发时间
+		!function(){
+			var elem = document.getElementById('useDateStart');
+			var date = new Date();
+			elem.value = [date.getFullYear(),date.getMonth()+1,date.getDate()].join('-');
+		}();
+
+
+
+		// 滑块
+		!function(){
+
+			var bar = document.getElementById('slider');
+			var input = document.getElementById('days');
+			var slider = bar.querySelectorAll('i');
+			var line = bar.querySelector('b');
+			var x = 0;
+			var w = bar.offsetWidth;
+			var left = 0;
+			var select = null;
+			var constant = 11 // 偏移常量；
+
+
+			var getvalue = function(val){
+				var arr = ['1','2','3','4','5','6','7','8','9','10+'];
+				var res = arr[parseInt(val/constant)];
+				return res;
+			}
+
+			var move = function(event){
+
+				if(!event.touches[0]){return;}
+				var per = (event.touches[0].clientX - x)*100/w + left;
+				per = per < 100 ? per < 0 ? 0 : per : 100; 
+				select.style.left = per + '%';
+
+				var left1 = parseFloat(slider[0].style.left);
+				var left2 = parseFloat(slider[1].style.left);
+
+				var daysStart = getvalue(Math.min(left1,left2));
+				var daysEnd = getvalue(Math.max(left1,left2));
+
+				line.style.left = Math.min(left1,left2) + '%';
+				line.style.width = Math.abs(left1-left2) + '%';
+				
+				
+				req.daysStart = daysStart;
+				req.daysEnd = daysEnd;
+
+				if(daysStart == 0){delete req.daysStart;}
+				if(daysEnd == '10+'){delete req.daysEnd;}
+
+				input.value = daysStart + '-' + daysEnd;
+			}
+
+			var stop = function(event){
+				move(event);
+				window.removeEventListener('touchmove', move, false);
+				window.removeEventListener('touchend', stop, false);
+			}
+
+			var start = function(event){
+				if(!event.touches[0]){return;}
+				x = event.touches[0].clientX;
+				select = this;
+				left = parseFloat(this.style.left);
+
+				Array.prototype.slice.call(slider,0).map(function(i){
+					if(i== select){
+						i.classList.add('hot');
+					}else{
+						i.classList.remove('hot');
+					}
+				});
+
+				window.addEventListener('touchmove', move, false);	
+				window.addEventListener('touchend', stop, false);	
+			}
+			
+
+			// 初始化
+			var value = input.value.split('-');
+			value[0] = parseFloat(value[0]) -1;
+			value[1] = parseFloat(value[1]) -1;
+
+
+			slider[0].style.left = value[0]*constant +'%';
+			slider[1].style.left = value[1]*constant +'%';
+
+			line.style.left = value[0]*constant +'%';
+			line.style.width = Math.abs(value[0]-value[1])*constant + '%';
+
+			slider[0].addEventListener('touchstart', start, false);
+			slider[1].addEventListener('touchstart', start, false);
+		}();
+
+
+
+		// 初始化
+		!function(){
+			var event = document.createEvent('Event');
+			event.initEvent('selectCity', true, true);
+			event.detail = {name:localStorage.getItem('user_city') || '深圳'};   
+			window.dispatchEvent(event);
+		}();
+
+
+
+
+
+
+	</script>
+
+
+	
+</body>
+</html>

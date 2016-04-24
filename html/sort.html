@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		#container{top: 64px;bottom: 0px;}
+		#container .scroll{padding-bottom: 10px;}
+		.mui-pull-bottom-pocket{display: none;}
+	</style>
+	<title>Document</title>
+</head>
+<body>
+
+
+	<header>
+		<h2>分类</h2>
+		<span><a href="search.html"><i class="icon icon-yuanjiaojuxing1"></i></a></span>
+	</header>
+
+	<div class="pullRefresh" id="container" >
+		<div class="scroll">
+
+			<section class="sort">
+				<ul>
+					<li>
+						<a href="sort_list.html?title=出境游">
+							<i class="icon icon-xingzhuang92"></i>
+							<h3>出境游</h3>
+							<p>优质国外出境旅游,完整接送流程超过2000条线路,任意选择</p>
+						</a>
+					</li>
+					<li>
+						<a href="sort_list.html?title=港澳游">
+							<i class="icon icon-xingzhuang90"></i>
+							<h3>港澳游</h3>
+							<p>快速组团通关服务,让您快速到达目的地与多家景点深入合作,让您畅游香港</p>
+						</a>
+					</li>
+					<li>
+						<a href="sort_list.html?title=国内游">
+							<i class="icon icon-xingzhuang91"></i>
+							<h3>国内游</h3>
+							<p>强大的接团队,通行全国超过3000条线路,消费透明,高端享受</p>
+						</a>
+					</li>
+					<li>
+						<a href="sort_list.html?title=周边游">
+							<i class="icon icon-xingzhuang93"></i>
+							<h3>周边游</h3>
+							<p>优质名宿、景点应有尽有配套出行,大型巴士直达景点、酒店</p>
+						</a>
+					</li>
+				</ul>
+			</section>
+		</div>
+	</div>
+
+
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			swipeBack: false,
+			pullRefresh: {
+				container: '#container',
+				down: {
+					contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+					
+				},
+				up: {
+					contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+					contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+					callback: function(){}
+				}
+			}
+		});
+
+		// 链接点击事件
+		mui('body').on('tap','a',function(){
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {href: this.getAttribute('href')});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+
+	</script>
+	
+</body>
+</html>

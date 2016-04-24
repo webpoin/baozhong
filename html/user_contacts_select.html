@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		#container{position: absolute;width: 100%; top: 164px;bottom: 0px;}
+		#container .scroll{position: absolute;left: 0;top: 0;width: 100%;min-height: 100%;padding-top: 1px;}
+	</style>
+	<title>Document</title>
+</head>
+<body>
+	
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	<header>
+		<h2>选择常旅</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+		<span style="font-size: 12px;right:10px;"><a href="header.html?title=添加常用旅客&url=user_contacts_add">添加旅客</a></span>
+	</header>
+
+
+	<div class="contacts_title" id="contacts_title">
+		<h2>您预定旅客共{{number}}人，已选<em>{{number_select}}</em>人，详情如下</h2>
+		<ul>
+			<li subdata="{{price}}">{{productFormatName}}：预定{{count}}人，已选择<em>{{number}}</em>人</li>
+		</ul>
+	</div>
+
+	<div id="container">
+		<div class="scroll">
+	
+			<section class="contacts" id="template">
+				<ul>
+					<li subdata="{{data}}" >
+						<label>
+							<input type="checkbox" id="{{id}}" {{checked}}>
+							<h3>{{name}} <b class="show_{{sex}}"></b></h3>
+							<p><b class="show_{{mobile}}">手机:{{mobile}}</b> <b class="show_{{birthday}}">生日:{{birthday}}</b></p>
+						</label>
+						<span><a href="header.html?title=编辑旅客信息&url=user_contacts_add&id={{id}}"><i class="icon icon-xyj"></i></a></span>
+					</li>
+				</ul>
+			</section>
+
+			<a class="btn_submit" >确定</a>
+
+		</div>
+	</div>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/iscroll-lite.js"></script>
+	<script type="text/javascript">
+
+		// 最原来选中的人
+		var line_select = JSON.parse(localStorage.getItem('line_select') || '[]');
+		var line_booking = JSON.parse(localStorage.getItem('line_booking')|| '{}'); //预订信息
+		var line_tourist = {}; // 旅客信息
+		var scroll = new IScroll('#container',{mouseWheel: false,scrollbars: false}); // 滚动
+		var format = { // 格式化
+			"1" : {name : "成人",discript: '法定年龄18到65周岁，具体独立法律责任的自然人'},
+			"2" : {name : "老人(65-75)",discript: '法定年龄65到75周岁'},
+			"3" : {name : "幼儿(占床)",discript: '法定年龄小于1到6周岁，使用独立床位'},
+			"4" : {name : "小童(不占床)",discript: '法定年龄6到18周岁，不含独立床位'},
+			"5" : {name : "婴儿",discript: '法定年龄1周岁以下，使用独立床位'},
+			"6" : {name : "老人(75+)",discript: '老年人超过75周岁不建议出游'},
+		}
+
+		var count = function(){
+
+			var number = {};
+
+			line_booking.number_select = line_select.length;
+			line_select.map(function(i){
+				var id = i.productFormatId;
+				number[id] = number[id] ? number[id] + 1 : 1;
+			});
+
+			line_booking.price.map(function(i){
+				i.number = number[i.productFormatId] || 0;
+			});
+
+			window.tplExchange(document.getElementById('contacts_title'),line_booking);
+		}
+
+		service({
+			"type" : "getUserContacts",
+		    "start": 0,
+		    "limit": 10
+		},function(json){
+
+			// 动态标题
+			var title = document.querySelector('.contacts_title');
+
+			// 判断是不是选中状态
+			var checked = {};
+
+			// 排序区间
+			var interval = line_booking.price.sort(function(a,b){return a.minAge - b.minAge});
+
+			// 根据年龄计算价格
+			var countPrice = function(birthday){
+
+				var obj = {price : 0,minAge : 0,maxAge : 500,def:true}
+				var arr = [];
+				var date_line = new Date(line_booking.useDate);
+				var date_birt = new Date(birthday);
+				var old = date_line.getFullYear() - date_birt.getFullYear();
+				var dMonth = date_line.getMonth() - date_birt.getMonth();
+				var dDate = date_line.getDate() - date_birt.getDate();
+
+				// 算年龄
+				if(dMonth < 0 || (dMonth == 0 && dDate <0 ) ){ old -= 1 ;}
+
+
+				if(old <= 50){ // 若x<=50，则找出最接近x，且大于x的区间，返回该区间旅客类型； 
+
+					interval.filter(function(i){
+						if(i.minAge <= 50 && i.maxAge > old && i.maxAge < obj.maxAge){
+							obj = i;
+						}
+					});
+					// 如果没有，取第一个
+					obj = obj.def ? interval[0] : obj;
+
+				}else{ // 若x>50，则找出最接近x，且小于x的区间，返回该区间旅客类型；
+					interval.map(function(i){
+						if(i.maxAge > 50 && i.minAge < old && i.minAge > obj.minAge){
+							obj = i;
+						}
+						if(i.maxAge > 50){arr.push(i)}
+					});
+
+					// 如果没有，取最后一个
+					obj = obj.def ? arr.length >0 ? arr[0] : interval.slice(-1)[0] : obj;
+				}
+
+				obj.old = old;
+				return obj;
+			}
+
+			line_select.map(function(i){checked[i.id] = i;});
+			json.data.map(function(i){
+
+				// 计算这位用户在这条线路上的数据
+				var thisobj = countPrice(i.birthday);
+
+				// 是否为选中
+				i.checked = checked[i.id] ? 'checked' : '';
+				i.remark = i.remark || '';
+				line_tourist[i.id] = window.extend(i,thisobj,checked[i.id]);
+			});
+
+
+
+			window.tplExchange(document.getElementById('template'),json,!json.ret);
+
+			
+			// 触发计算
+			var input = document.querySelector('#container input');
+			if(input){
+				mui.trigger(input,'change');
+			}else{
+				count();
+			}
+
+			document.getElementById('container').style.top = (title.offsetTop + title.offsetHeight + 10) + 'px'; 
+			scroll.refresh();
+
+			document.querySelector('.loading').classList.add('end');
+		});
+
+		// 刷新
+		window.addEventListener('reload',function(event){plus.webview.currentWebview().reload();});
+
+
+		// 更改选择时触发
+		mui('body').on('change','input',function(){
+			var storage = [];
+			var id = this.getAttribute('id');
+
+			// 删除原来的
+			line_select.map(function(i){i.id != id && storage.push(i);});
+
+			// 选中
+			this.checked && line_tourist[id] && storage.push(line_tourist[id]);
+			line_select = storage;
+
+
+			localStorage.setItem('line_select',JSON.stringify(storage));
+
+			// 计算
+			count();
+
+			// 触发事件
+			mui.fire(plus.webview.getWebviewById('line_write'),'selectChange');
+		});
+
+
+		// 更改选择时触发
+		mui('body').on('tap','a.btn_submit',function(){
+			mui.back();
+		})
+
+
+	</script>
+
+</body>
+</html>

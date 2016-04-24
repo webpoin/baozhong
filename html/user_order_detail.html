@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		.line_ctrl{position: fixed;bottom: 0;left: 0;width: 100%;z-index: 10;}
+		#container{top: 64px;bottom: 60px;}
+		#container .scroll{padding-bottom: 10px;}
+		.mui-pull-bottom-pocket{display: none;}
+		.mui-android #container {position: absolute;width: 100%; overflow: auto;}
+	</style>
+	<title>Document</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+
+	<header>
+		<cite>
+			<h2>订单详情</h2>
+		    <small class="toback"><i class="icon icon-fanhui"></i></small>				
+		</cite>
+	</header>
+
+
+	<div class="pullRefresh" id="container" >
+		<div class="scroll template" id="template" >
+			<section class="order_line">
+				<h2 class="order_title">
+					<i class="icon icon-xianluxinxi"></i>
+					<strong>线路信息</strong>
+				</h2>
+
+				<div class="collect">
+					<ul>
+						<li>
+							<a href="line.html?productId={{productId}}&supplierId={{supplierId}}">
+								<div class="collect_img">
+									<img data-src="{{lineImageUrl}}" alt="">
+									<span>{{startingName}}出发</span>
+								</div>
+								<div class="collect_tle">
+									<h2>{{productName}}{{lineNameRemark}}</h2>
+									<div class="collect_price"><i>￥</i>{{minPrice}}<small>起</small></div>
+									<p>天数: {{days}}天</p>
+									<p>团期: <b subdata="{{recentUseDate}}">{{0}}</b></p>
+									<div class="collect_tag"><span class="recom{{0}}" subdata="{{tagIdList}}"></span></div>
+								</div>
+							</a>
+						</li>
+					</ul>
+					
+				</div>
+			</section>
+
+			<form action="#" class="contacts_add write_self" style="border-top:1px solid #c8c7cc;margin-top: 10px;">
+				<h2 class="order_title">
+					<i class="icon icon-xingzhuang258"></i>
+					<strong>预定人信息</strong>
+				</h2>
+				<ul subdata="{{orderLinkman}}">
+					<li>
+						<span><i class="icon icon-xingzhuang185"></i>姓名</span>
+						<label><input type="text" data-value="{{name}}" readonly="readonly"></label>
+					</li>
+					<li>
+						<span><i class="icon icon-xingzhuang226"></i>手机号码</span>
+						<label><input type="text" value="{{mobile}}" readonly="readonly"></label>
+					</li>
+				</ul>
+			</form>
+
+			<section class="order_tourist">
+				<h2 class="order_title">
+					<i class="icon icon-xingzhuang260"></i>
+					<strong>游客信息</strong>
+					<span>{{touristLength}}人</span>
+				</h2>
+				<dl subdata="{{touristList}}">
+					<dt><i class="icon icon-xingzhuang185"></i>{{name}} <span>{{mobile}}</span></dt>
+					<dd subdata="{{serviceAdditional}}" class="hasVisa_{{hasVisa}} needSingleRoom_{{needSingleRoom}} {{visaenable}}">
+						<i class="">附</i>
+						<p class="order_tourist_show_visa">
+							<strong>包含签证</strong>
+							<span>如果您还没有签证，我们为您办理</span>
+							<em>￥{{moneyNoVisa}}</em>
+						</p>
+						<p class="order_tourist_show_singleroom">
+							<strong>单独房间</strong>
+							<span>您可以享用单独的一个房间</span>
+							<em>￥{{moneySingleRoom}}</em>
+						</p>
+					</dd>
+					<dd class="{{remarkenable}}">
+						<i class="bei">备</i>
+						<p>{{remark}}</p>
+
+					</dd>
+				</dl>
+
+			</section>
+
+			<section class="order_insurance">
+				<h2 class="order_title">
+					<i class="icon icon-baoxian"></i>
+					<strong>保险信息</strong>
+				</h2>
+				<ul>
+					<li subdata="{{insuranceOrderList}}">
+						<h3>{{productName}} 单价:<em>￥{{price}}</em>元/人 <span>x{{count}}</span></h3>
+					</li>
+				</ul>
+				<h6 class="{{insurance_havemore}}"></h6>
+			</section>
+
+
+			<div class="order_favorable">
+				<h2 class="order_title">
+					<i class="icon icon-youhuiquan"></i>
+					<strong>优惠信息</strong>
+				</h2>
+				<ul>
+					<li subdata="{{couponList}}"><strong>{{promotionName}}</strong><span>可享受<em>￥{{price}}</em>元优惠</span></li>
+				</ul>
+				<h6 class="{{coupon_havemore}}"></h6>
+			</div>
+
+			<div class="order_detail_status">
+				<h2 class="order_title">
+					<i class="icon icon-defaultbanbenxiugaijilu"></i>
+					<strong>订单操作</strong>
+				</h2>
+				<a class="order_strong" href="article.html?title=出团通知&type=getOrderNotice&orderSaleId={{orderSaleId}}" >查看出团通知</a>
+				<a class="order_cancel" orderSaleId="{{orderSaleId}}">取消订单</a>
+			</div>
+
+		</div>
+	</div>
+
+	<section class="line_ctrl" id="line_ctrl">
+		<cite class="status_{{appOrderStatus}}">
+			<span class="line_ctrl_total">总价:<em>￥{{moneyTotal}}</em></span>
+			<span class="line_ctrl_btn">
+				<a href="line_payway.html?id={{orderSaleId}}" class="status_{{appOrderStatus}}"><i class="icon icon-xingzhuang261"></i></a>
+			</span>
+		</cite>
+	</section>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		!function(u){
+			// 如果是android，直接滚动,如果ios，加效果
+			if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+				mui.init({
+					pullRefresh: {
+						container: '#container',
+						down: {
+							contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+							contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+							contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+						},
+						up: {
+							contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+							contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+							callback: function(){} //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+						}
+					}
+				});
+			}
+		}(navigator.userAgent);
+
+		// 6.34 查找分类目的地
+		service({
+			"type" : "getOrderdetail",
+			"orderSaleId": href.orderSaleId
+		},function(json){
+
+
+			
+			if(json.ret){
+				var touristList = json.data.touristList || [];
+				touristList.map(function(i){
+					var serviceAdditional = i.serviceAdditional || {};
+					i.visaenable = serviceAdditional.hasVisa == 1 || serviceAdditional.needSingleRoom == 1 ? 'true' : 'false';
+					i.remarkenable = !!i.remark ? 'true' : 'false';
+				});
+
+				json.data.touristLength = json.data.touristList.length;
+
+				json.data.insurance_havemore = json.data.insuranceOrderList.length >3 ? 'show' : '';
+				json.data.coupon_havemore = json.data.couponList.length >3 ? 'show' : '';
+
+				document.querySelector('.order_detail_status').classList.add('status_'+json.data.appOrderStatus)
+			}else{
+				return false;
+			}
+
+
+			// 替换模板
+			window.tplExchange(document.getElementById('template'),json.data,!json.ret);
+			window.tplExchange(document.getElementById('line_ctrl'),json.data,!json.ret);
+
+
+			// 保险列表
+			if(!json.data.insuranceOrderList || json.data.insuranceOrderList.length == 0){
+				document.querySelector('.order_insurance').style.display = 'none';
+			}
+
+			// 优惠列表
+			if(!json.data.couponList || json.data.couponList.length == 0){
+				document.querySelector('.order_favorable').style.display = 'none';
+			}
+
+			var ctrl = document.querySelector('.line_ctrl');
+			document.querySelector('.loading').classList.add('end');
+
+		});
+
+
+		// 取消订单
+		mui('body').on('tap','a.order_cancel',function(){
+
+			var that = this;
+			plus.ui.confirm("确定要取消该订单吗？", function(i) {
+
+				if(i.index != 0){return;}
+				service({"type" : 'setOrderCancel',"orderSaleId" : that.getAttribute('orderSaleId')},function(){
+					// 刷新当前
+					// 刷新列表
+					var user_order = plus.webview.getWebviewById('user_order');
+					user_order && user_order.reload();
+					plus.webview.currentWebview().reload();
+				});
+
+			}, "取消订单", ["确认", "取消"]);
+
+			return false;
+		});
+
+
+		// 展开收起保险信息
+		mui('body').on('tap','.order_insurance h6,.order_favorable h6',function(){
+			
+			var classList = this.parentNode.classList;
+			if(classList.contains('active')){
+				classList.remove('active');
+			}else{
+				classList.add('active');
+			}
+			return false;
+		});
+
+		// 支付订单
+		mui('.line_ctrl').on('tap','.line_ctrl_btn a',function(){
+			var status = this.getAttribute('status');
+			if(status == 1 || status == 2 || status == 8){return}
+			return false;
+		});
+
+
+
+	</script>
+
+	
+</body>
+</html>

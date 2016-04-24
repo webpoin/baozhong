@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">body{background-color: #fff;}</style>
+	<title>我的管家</title>
+</head>
+<body>
+
+
+	<section class="keeper_main">
+		
+		<dl class="active">
+			<dt><a href="#"><strong>宝安前进一路营业部</strong><span></span></a></dt>
+			<dd>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+				<a href="#" class="active">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>	
+			</dd>
+		</dl>
+
+
+		<dl>
+			<dt><a href="#"><strong>宝安前进一路营业部</strong><span></span></a></dt>
+			<dd>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><a href="#"><strong>宝安前进一路营业部</strong><span></span></a></dt>
+			<dd>
+				<a href="#">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<h3>叶凝芝</h3>
+					<p>手机:15012467898</p>
+					<span>
+						<i class="icon icon-xingzhuang265"></i>
+						<i class="icon icon-xingzhuang94"></i>
+					</span>
+				</a>
+			</dd>
+		</dl>
+		
+		
+
+	</section>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		mui('.keeper_main dt').on('click','a',function(){
+			var parent = this.closest('dl');
+			if(parent.classList.contains('active')){
+				parent.classList.remove('active')
+			}else{
+				parent.classList.add('active');
+			}
+			return false;
+		});
+
+		mui('.keeper_main dd').on('click','a',function(){
+			var acti = document.querySelector('.keeper_main dd a.active');
+			acti && acti.classList.remove('active');
+			this.classList.add('active');
+
+			return false;
+		});
+
+
+	</script>
+
+
+	
+</body>
+</html>

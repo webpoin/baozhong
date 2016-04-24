@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+</head>
+<body>
+	
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+
+	<form action="#" class="contacts_add" id="user_main" style="margin-top: 10px;padding-bottom: 10px;">
+		
+		<ul>
+			<li>
+				<span><i class="icon icon-xingzhuang185"></i>姓名</span>
+				<label><input name="name" type="text" placeholder="必填" data-value="{{name}}"></label>
+			</li>
+			<li>
+				<span><i class="icon icon-xingbie"></i>性别</span>
+				<p class="contacts_radio"><label><input type="radio" name="sex" value="1" {{checked_man}}><b>男</b></label></p>
+				<p class="contacts_radio"><label><input type="radio" name="sex" value="2" {{checked_lay}}><b>女</b></label></p>
+			</li>
+			<li>
+				<span><i class="icon icon-chushengriqi"></i>出生日期</span>
+				<label><input type="text" name="birthday" id="birthday" placeholder="请输入您出生日期" data-value="{{birthdayStr}}" readonly="readonly" ></label>
+			</li>
+			<li>
+				<span><i class="icon icon-xingzhuang226"></i>手机号码</span>
+				<label><input name="mobile" type="text"  data-value="{{mobile}}" ></label>
+			</li>
+		</ul>
+
+		<ul>
+			<li subdata="{{idTypeAndNoList}}">
+				<span><i class="icon icon-{{idIcon}}"></i>{{idName}}</span>
+				<label><input name="idTypeAndNoList_{{idType}}" type="text" placeholder="请输入您的{{idName}}号" data-value="{{idNo}}"></label>
+			</li>
+		</ul>
+
+		<p>
+			<i class="icon icon-xingzhuang230"></i>
+			<span>身份证、港澳通行证、护照至少必填其中一项</span>
+		</p>
+
+
+		<a class="btn_submit disabled" href="#">确定添加</a>
+		<a class="btn_submit2" style="display:none;">删除游客</a>
+	</form>
+
+
+	
+	<!-- <a class="btn_submit" href="#">确定添加</a> -->
+
+	
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var template = document.getElementById('user_main');
+		var credentials = {
+			"1" : {name: "身份证", icon:'xingzhuang228'},
+			"2" : {name: "户口本", icon:'xingzhuang228'},
+			"3" : {name: "港澳通行证", icon:'xingzhuang229'},
+			"4" : {name: "回乡证", icon:'huixiangzheng'},
+			"5" : {name: "台胞证", icon:'rutaizheng'},
+			"6" : {name: "军官证", icon:'jun'},
+			"7" : {name: "警官证", icon:'xingzhuang228'},
+			"8" : {name: "出生证", icon:'xingzhuang228'},
+			"9" : {name: "香港身份证", icon:'xingzhuang228'},
+			"10" : {name: "护照", icon:'xingzhuang228'},
+			"11" : {name: "结婚证", icon:'xingzhuang228'},
+			"12" : {name: "台湾通行证", icon:'xingzhuang228'},
+			"13" : {name: "其它", icon:'xingzhuang228'},
+		}
+
+
+		// 数据过滤
+		var filter = function(data){
+
+			data.idTypeAndNoList && data.idTypeAndNoList.map(function(i){
+				var obj = credentials[i.idType] || credentials['13'];
+				i.idName = obj.name;
+				i.idIcon = obj.icon;
+
+			});
+
+			if(data.sex == 2){
+				data.checked_man = '';
+				data.checked_lay = 'checked="true"';
+			}else{
+				data.checked_man = 'checked="true"';
+				data.checked_lay = '';
+			}
+
+			// 替换模板
+			window.tplExchange(template,data);
+			
+			// 关闭正在加载
+			document.querySelector('.loading').classList.add('end');
+		}
+		
+		// 表单验证
+		var formTest = function(){
+			var data = window.serialize(template);
+			var certificateNo = data.idTypeAndNoList_1;
+
+			// 当有身份证的时候，出生日期为身份证上的日期
+			if(certificateNo && /^\d{6}(((19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])\d{3}([0-9]|x|X))|(\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])\d{3}))$/.test(certificateNo)){
+
+	
+				var parseInner = function(certificateNo, idxSexStart, birthYearSpan) {
+					var year = (birthYearSpan == 2 ? '19' : '') + certificateNo.substr(6, birthYearSpan);
+					var month = certificateNo.substr(6 + birthYearSpan, 2);
+					var day = certificateNo.substr(8 + birthYearSpan, 2);
+					return year + '-' + month + '-' + day;
+				};
+
+				var birthday = parseInner(certificateNo, certificateNo.length == 15 ? 14 : 16, certificateNo.length == 15 ? 2 : 4);
+				document.getElementById('birthday').value = birthday;
+			}
+
+
+			// 姓名必填
+			if(!data.name){return '姓名不能为空';}
+
+			// 手机号码必填
+			// if(!data.mobile){return '手机号码不能为空';}
+
+			// 手机号码格式正确
+			if(data.mobile && !(/^1[3|4|5|7|8]\d{9}$/.test(data.mobile))){return '手机号码错误';}
+
+			// 身份证、军官证、护照至少填一项
+			if(!(data.idTypeAndNoList_1 || data.idTypeAndNoList_3 || data.idTypeAndNoList_10)){
+				return '身份证、港澳通行证、护照至少填一项';				
+			}
+		}
+
+
+		// 如果有id，则表示编辑
+		if(href.id){
+
+			// 取用户详情数据
+			service({
+				"type" : "getTouristInfo",
+				"id" : href.id
+			},function(json){
+				json.data && filter(json.data);
+			});
+
+			document.querySelector('.btn_submit').innerHTML = '保存修改';
+			document.querySelector('.btn_submit2').style.display = 'block';
+		}else{
+
+			var d = new Date;
+			var data = {
+				"name": "",
+				"mobile": "",
+				"sex": 1,
+				"birthday": "2016-01-01",
+				"birthdayStr" : d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(),
+				"idTypeAndNoList": [
+					{"idType": "1","idNo": ""}, 
+					// {"idType": "2","idNo": ""}, 
+					{"idType": "3","idNo": ""}, 
+					// {"idType": "4","idNo": ""}, 
+					// {"idType": "5","idNo": ""}, 
+					// {"idType": "6","idNo": ""}, 
+					// {"idType": "7","idNo": ""}, 
+					// {"idType": "8","idNo": ""}, 
+					// {"idType": "9","idNo": ""}, 
+					{"idType": "10","idNo": ""}, 
+					// {"idType": "11","idNo": ""}, 
+					{"idType": "12","idNo": ""}, 
+					{"idType": "13","idNo": ""}
+				]
+			}
+
+			filter(data);
+		}
+
+
+		// 删除游客
+		mui('body').on('tap','a.btn_submit2',function(){
+
+			plus.ui.confirm("确定要删除该游客吗？", function(i) {
+
+				if(i.index != 0){return;}
+				service({"type" : 'deleteTourist',"id" : href.id},function(){
+					mui.fire(plus.webview.currentWebview().parent(),'back');
+					mui.fire(plus.webview.getWebviewById('user_contacts'),'reload');
+					mui.fire(plus.webview.getWebviewById('user_contacts_select'),'reload');
+				});
+
+			}, "删除游客", ["确认", "取消"]);
+
+			return false;
+		});
+
+
+
+		// 更改生日
+		mui('body').on('tap','#birthday',function(){
+
+			var that = this;
+			var today = new Date();
+			var minDate = new Date('1900-1-1');
+			var maxDate = new Date();
+
+			if(this.value){
+				var val = this.value.split('-');
+				today.setFullYear(val[0]||today.getFullYear(),val[1] ? val[1]-1 : today.getMonth(),val[2]||today.getDate());
+			}
+
+			plus.nativeUI.pickDate(function(e) {
+				var d = e.date;
+				that.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+				mui.trigger(that,'change');
+			}, function(e) {
+				// that.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+			}, {
+				title: "请选择日期",
+				date: today,
+				minDate: minDate,
+				maxDate: maxDate
+			});
+		});
+
+
+		// 输入内容改变
+		mui('.contacts_add').on('change','input',function(){
+			var submit = document.querySelector(".btn_submit");
+
+			var test = formTest();
+
+			// 表单验证是否正确
+			if(test){
+				submit.classList.add('disabled');
+			}else{
+				submit.classList.remove('disabled');
+			}
+		});
+
+
+
+
+		// 提交数据
+		mui('body').on('tap','.btn_submit',function(){
+
+			var that = this;
+			var data = window.serialize(template);
+			var req = {type: 'setTouristInfo', idTypeAndNoList:[]}
+
+
+			// 错误提示
+			if(this.classList.contains('disabled')){
+				var toast = formTest();
+				toast && plus.ui.toast(toast);
+				return false;
+			}
+
+			
+			for(var i in data){
+				if(i.indexOf('idTypeAndNoList_')<0){
+					req[i] = data[i];
+				}else{
+					data[i] && req.idTypeAndNoList.push({"idType" : i.replace('idTypeAndNoList_',''),"idNo":data[i]});
+				}
+			}
+
+			// 判断是否是添加游客
+			href.id && (req.id = href.id);
+			req.sex = parseInt(req.sex);
+
+			service(req,function(json){
+				// 成功
+				if(json.ret){
+					var contacts = plus.webview.getWebviewById('user_contacts');
+					var select = plus.webview.getWebviewById('user_contacts_select');
+					
+					contacts && contacts.reload();
+					select && select.reload();
+					// 延迟关闭
+					setTimeout(function(){
+						mui.fire(plus.webview.currentWebview().parent(),'back');
+					},100);
+				}else{
+					that.classList.remove('disabled');
+				}
+			});
+
+			this.classList.add('disabled');
+			return false;
+
+		});
+
+
+	</script>
+
+
+
+
+
+</body>
+</html>

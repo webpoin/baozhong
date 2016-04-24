@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+	<style type="text/css">
+		body{background: #000;}
+	</style>
+</head>
+<body>
+
+	<section class="statistics">
+
+		<dl>
+			<dt><i class="icon icon-xingzhuang261"></i>费用明细</dt>
+			<dd>
+				<strong>机票+酒店</strong>
+				<p>已含民航发展基金,燃油费与税费</p>
+				<span><em>￥24150</em></span>
+			</dd>
+		</dl>
+
+		<dl>
+			<dt><i class="icon icon-baoxian"></i>保险费用</dt>
+			<dd>
+				<strong>太平洋旅程取消保险计划5</strong>
+				<span><em>￥100</em> x2</span>
+			</dd>
+			<dd>
+				<strong>太平洋保险计划1</strong>
+				<span><em>￥89</em> x2</span>
+			</dd>
+		</dl>
+
+
+		<dl>
+			<dt><i class="icon icon-youhuiquan"></i>优惠信息</dt>
+			<dd>
+				<strong>跨年红包</strong>
+				<span><em>￥100</em></span>
+			</dd>
+		</dl>
+
+		<h6>
+			<strong>总计:</strong>
+			<span>￥<em>22678</em></span>
+		</h6>
+		
+
+		<a class="statistics_close"><i class="icon icon-xingzhuang268"></i></a>
+
+	</section>
+
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		mui.plusReady(function() {
+			// 关闭等待窗
+			plus.nativeUI.closeWaiting();
+			plus.webview.currentWebview().show();
+		});
+
+
+		// 关闭详细 
+		mui('body').on('tap','a.statistics_close',function(){
+			plus.webview.currentWebview().close();
+			return false;
+		});
+
+	</script>
+
+</body>
+</html>

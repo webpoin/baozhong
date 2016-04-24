@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+</head>
+<body>
+
+	<div class="loading loading2" ><img src="../images/loading.gif" alt=""></div>
+
+	<div class="user_info" id="user_head" >
+		<ul class="user_info_head">
+			<li>
+				<i class="icon icon-xingzhuang224" ></i>头像
+				<div class="user_info_pic" id="js-uploadHeader"><img data-src="{{imageUrl}}" id="head-img"></div>	
+			</li>
+		</ul>		
+	</div>
+
+	<form action="#" class="contacts_add" id="user_main" style="margin-top: 10px;">
+		
+		<ul>
+			<li>
+				<span><i class="icon icon-xingzhuang185"></i>姓名</span>
+				<label><input name="name" type="text" placeholder="必填" data-value="{{name}}"></label>
+			</li>
+			<li>
+				<span><i class="icon icon-xingbie"></i>性别</span>
+				<p class="contacts_radio"><label><input type="radio" name="sex" value="1" {{checked_man}}><b>男</b></label></p>
+				<p class="contacts_radio"><label><input type="radio" name="sex" value="2" {{checked_lay}}><b>女</b></label></p>
+			</li>
+			<li>
+				<span><i class="icon icon-chushengriqi"></i>出生日期</span>
+				<label><input type="text" name="birthday" id="birthday" placeholder="请输入您出生日期" data-value="{{birthdayStr}}" readonly="readonly" ></label>
+			</li>
+			<li>
+				<span><i class="icon icon-xingzhuang226"></i>手机号码</span>
+				<label><input name="mobile" type="text" placeholder="必填" readonly="readonly" data-value="{{mobile}}"></label>
+			</li>
+		</ul>
+
+		<ul>
+			<li subdata="{{idTypeAndNoList}}">
+				<span><i class="icon icon-{{idIcon}}"></i>{{idName}}</span>
+				<label><input name="idTypeAndNoList_{{idType}}" type="text" placeholder="请输入您的{{idName}}号" data-value="{{idNo}}"></label>
+			</li>
+		</ul>
+
+		<p>
+			<i class="icon icon-xingzhuang230"></i>
+			<span>身份证、港澳通行证、护照至少必填其中一项</span>
+		</p>
+
+
+		<a class="btn_submit disabled" href="#">修改资料</a>
+		<div style="height: 10px;"></div>
+	</form>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+
+
+		var template_main = document.getElementById('user_main');
+
+		var host = localStorage.getItem('host') + '/tourapp/member/uploaduserimage';
+		var token = localStorage.getItem('token');
+			host = host + '?SYSTEM_ORG_ID=100004&token=' + token;
+		
+
+		// 表单验证
+		var formTest = function(){
+			var data = window.serialize(template_main);
+			var certificateNo = data.idTypeAndNoList_1;
+
+			// 当有身份证的时候，出生日期为身份证上的日期
+			if(certificateNo && /^\d{6}(((19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])\d{3}([0-9]|x|X))|(\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])\d{3}))$/.test(certificateNo)){
+
+		
+				var parseInner = function(certificateNo, idxSexStart, birthYearSpan) {
+					var year = (birthYearSpan == 2 ? '19' : '') + certificateNo.substr(6, birthYearSpan);
+					var month = certificateNo.substr(6 + birthYearSpan, 2);
+					var day = certificateNo.substr(8 + birthYearSpan, 2);
+					return year + '-' + month + '-' + day;
+				};
+
+				var birthday = parseInner(certificateNo, certificateNo.length == 15 ? 14 : 16, certificateNo.length == 15 ? 2 : 4);
+				document.getElementById('birthday').value = birthday;
+			}
+
+
+			// 姓名必填
+			if(!data.name){return '姓名不能为空';}
+
+			// 手机号码必填
+			if(!data.mobile){return '手机号码不能为空';}
+
+			// 手机号码格式正确
+			if(!(/^1[3|4|5|7|8]\d{9}$/.test(data.mobile))){return '手机号码错误';}
+
+			// 身份证、军官证、护照至少填一项
+			if(!(data.idTypeAndNoList_1 || data.idTypeAndNoList_3 || data.idTypeAndNoList_10)){
+				return '身份证、港澳通行证、护照至少填一项';				
+			}
+		}
+
+
+		// 上传头像
+		var uploadHeader = function(path){
+
+			// 上传图片
+			var task = plus.uploader.createUpload(host, {
+					method: "POST",
+					blocksize: 204800,
+					priority: 100,
+					timeout : 100000
+				},
+				function(t, status) {
+					// 上传完成
+					if (status == 200) {
+						plus.ui.toast('上传头像成功');
+						localStorage.setItem('navigation','user')
+						plus.webview.getLaunchWebview().reload();
+					} else {
+						plus.ui.toast('上传头像失败，请重试');
+					}
+				},function(e){
+					plus.ui.toast('上传头像错误');
+				}
+			);
+			task.setRequestHeader('Customer','CustomerValue/XXXXXXXXXXXX');
+			// 压缩
+			plus.zip.compressImage({
+					src: path,
+					dst: plus.io.PRIVATE_DOC + '/'+Math.random()+'.jpg',
+					format:'jpg',
+					overwrite:true,
+					quality: 50,
+					width:"100px",
+					height: "100px"
+				},
+				function(event) {
+					document.getElementById('head-img').setAttribute('src',event.target);
+					task.addFile(event.target, {key: "file1"});			
+					task.start();
+				},function(error) {
+					plus.ui.toast('头像压缩失败');
+				}
+			);
+
+		}
+
+
+
+		// 取用户详情数据
+		service({
+			"type" : "getUserInfo",
+		},function(json){
+
+
+			if(json.ret){
+				json.data.idTypeAndNoList && json.data.idTypeAndNoList.map(function(i){
+					var obj = {
+						"1" : {name: "身份证", icon:'xingzhuang228'},
+						"2" : {name: "户口本", icon:'xingzhuang228'},
+						"3" : {name: "港澳通行证", icon:'xingzhuang229'},
+						"4" : {name: "回乡证", icon:'huixiangzheng'},
+						"5" : {name: "台胞证", icon:'rutaizheng'},
+						"6" : {name: "军官证", icon:'jun'},
+						"7" : {name: "警官证", icon:'xingzhuang228'},
+						"8" : {name: "出生证", icon:'xingzhuang228'},
+						"9" : {name: "香港身份证", icon:'xingzhuang228'},
+						"10" : {name: "护照", icon:'xingzhuang228'},
+						"11" : {name: "结婚证", icon:'xingzhuang228'},
+						"12" : {name: "台湾通行证", icon:'xingzhuang228'},
+						"13" : {name: "其它", icon:'xingzhuang228'},
+					}[i.idType];
+
+					i.idName = obj.name;
+					i.idIcon = obj.icon;
+				});
+
+				if(json.data.sex == 2){
+					json.data.checked_man = '';
+					json.data.checked_lay = 'checked="true"';
+				}else{
+					json.data.checked_man = 'checked="true"';
+					json.data.checked_lay = '';
+				}
+
+
+				if(!json.data.imageUrl){
+					json.data.imageUrl = '../images/user_pic.png';
+				}
+
+			}else{
+
+
+				return;
+			}
+
+			// 替换模板
+			var template_head = document.getElementById('user_head');
+			window.tplExchange(template_head,json.data,!json.ret);
+			window.tplExchange(template_main,json.data,!json.ret);
+
+			template_main.serialize =  JSON.stringify(window.serialize(template_main));
+			
+			// 关闭正在加载
+			document.querySelector('.loading').classList.add('end');
+
+		});
+
+
+		// 拍照上传
+		mui('body').on('tap','#js-uploadHeader',function(){
+
+			// 把焦点放到其他上面
+			this.focus();
+
+			var btnArray = [{title:"拍照或录像"},{title:"选取现有的"}];
+			plus.nativeUI.actionSheet( {
+				title:"选择照片",
+				cancel:"取消",
+				buttons:btnArray
+			}, function(e){
+				switch (e.index){
+					case 1:
+						plus.camera.getCamera().captureImage(function(path) {uploadHeader(path);}); // 拍照上传
+						break;
+					case 2:
+						plus.gallery.pick(function(path){uploadHeader(path);}); // 使用相册
+						break;
+					default:
+						break
+				}
+			} );
+
+
+		});
+
+
+		// 更改生日
+		mui('body').on('tap','#birthday',function(){
+
+			var that = this;
+			var today = new Date();
+			var minDate = (new Date()).setFullYear(2010, 0, 1);
+			var maxDate = (new Date()).setFullYear(2016, 11, 31);
+
+			if(this.value){
+				var val = this.value.split('-');
+				today.setFullYear(val[0]||today.getFullYear(),val[1] ? val[1]-1 : today.getMonth(),val[2]||today.getDate());
+			}
+
+			plus.nativeUI.pickDate(function(e) {
+				var d = e.date;
+				that.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+				mui.trigger(that,'change');
+			}, function(e) {
+				// that.value = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+			}, {
+				title: "请选择日期",
+				date: today,
+				minDate: minDate,
+				maxDate: maxDate
+			});
+		});
+
+
+		// 输入内容改变
+		mui('.contacts_add').on('change','input',function(){
+
+			var submit = document.querySelector(".btn_submit");
+			var test = formTest();
+
+			// 表单验证是否正确
+			if(test){
+				submit.classList.add('disabled');
+			}else{
+				submit.classList.remove('disabled');
+			}
+
+		});
+
+		// 提交数据
+		mui('body').on('tap','.btn_submit',function(){
+
+
+			
+			var that = this;
+			var data = window.serialize(template_main);
+			var req = {idTypeAndNoList:[]}
+
+			// 错误提示
+			if(this.classList.contains('disabled')){
+				var toast = formTest();
+				toast && plus.ui.toast(toast);
+				return false;
+			}
+
+
+
+			for(var i in data){
+				if(i.indexOf('idTypeAndNoList_')<0){
+					req[i] = data[i];
+				}else{
+					req.idTypeAndNoList.push({"idType" : i.replace('idTypeAndNoList_',''),"idNo":data[i]});
+				}
+			}
+
+			req.type = 'saveUserInfo';
+			service(req,function(json){
+				// 成功
+				if(json.ret){
+					template_main.serialize = JSON.stringify(data);
+					localStorage.setItem('navigation','user');
+					plus.webview.getLaunchWebview().reload();
+					mui.fire(plus.webview.currentWebview().parent(),'back');
+					window.plus.ui.toast('修改成功！');
+				}else{
+					that.classList.remove('disabled');
+					window.plus.ui.toast('修改失败，请重试');
+
+				}
+			});
+
+			this.classList.add('disabled');
+			return false;
+
+		});
+
+
+
+
+
+
+
+
+	</script>
+
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		body{background-color: #fff;}
+		#container{position: absolute;top: 104px;bottom: 0px;left: 76px;width: auto;right: 0;}
+		#container .scroll{padding-bottom: 10px;}
+		#container section.keeper_main{display: none;}
+		#container section.active{display: block;}
+		.mui-pull-bottom-pocket{display: none;}
+
+		.mui-android #container{overflow: auto;}
+	</style>
+	<title>我的管家</title>
+</head>
+<body>
+
+	<div class="loading loading2"><img src="../images/loading.gif" alt=""></div>
+	
+
+	<header>
+		<h2>我的管家</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+		<!-- <span class="determine">确定</span> -->
+	</header>
+
+
+	<section class="keeper" >
+		<h2 id="template_title" class="template">
+			<a href="keeper_city.html?city=深圳">
+				<i class="icon icon-xingzhuang25"></i>
+				所在城市:<b>{{name}}</b>
+			</a>
+			<span><i class="icon icon-disclosure"></i></span>
+		</h2>
+		<cite class="keeper_side template" id="keeper_side">
+			<a subdata="{{subAreaList}}" for="{{id}}" class="{{active}}">{{name}}</a>
+		</cite>
+	</section>
+
+
+	<div class="pullRefresh" id="container">
+
+		<div class="scrollbox template" id="keeper_main">
+			<section class="keeper_main" subdata="{{subAreaList}}" id="section_{{id}}">
+				<dl subdata="{{clientPeerList}}" id="{{id}}">
+					<dt><a><strong>{{name}}</strong><span></span></a></dt>
+					<dd>
+						<a subdata="{{sellUserList}}" class="active_{{ifButler}}" sellUserId="{{id}}" clientPeerId="{{clientPeerId}}">
+							<div class="img"><img data-src="{{imageUrl}}"></div>
+							<h3>{{name}}</h3>
+							<p>手机:{{mobile}}</p>
+							<span><i class="icon icon-xingzhuang94"></i></span>
+						</a>
+					</dd>
+				</dl>
+			</section>
+		</div>
+
+	</div>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		var ls_keeper = localStorage.getItem('user_keeper');
+		var req = { "type" : "getKeeper"}
+		var getGeolocation = function(){
+
+			// 6.4 查找绑定客户渠道所在区域的客户渠道信息
+			service(req,function(json){
+
+				if(json.ret){
+					json.data.subAreaList.map(function(i){i.active = i.clientPeerList ? 'active' : '';});
+				}else{
+					return;
+				}
+
+				// 替换模板
+				var template_title = document.getElementById('template_title');
+				var template_side = document.getElementById('keeper_side');
+				var template_main = document.getElementById('keeper_main');
+				window.tplExchange(template_title,json.data,!json.ret);
+				window.tplExchange(template_side,json.data,!json.ret);
+				window.tplExchange(template_main,json.data,!json.ret);
+
+				var active1 = document.querySelector('.keeper_side a.active');
+				var active2 = document.querySelector('.keeper_main dd a');
+
+				if(active1){
+					active1.setAttribute('loaddata','true');
+				}else{
+					active1 = document.querySelector('.keeper_side a');
+
+					active1 && mui.trigger(active1,'tap');
+
+				}
+
+				if(active2){
+					var dl = active2.closest('dl');
+					dl.classList.add('active');
+					dl.setAttribute('loaddata','true');
+
+					active2.closest('section').classList.add('active');
+				}
+
+
+
+				document.querySelector('.loading').classList.add('end');
+			});
+
+
+
+		}
+
+
+		// 若已绑定客户渠道，则所在城市为绑定客户渠道所在区域，绑定客户渠道默认展开。
+		if(ls_keeper){
+
+			ls_keeper = JSON.parse(ls_keeper);
+			req.countryName = ls_keeper.countryName;
+			req.cityName = ls_keeper.cityName;
+			req.clientPeerId = ls_keeper.clientPeerId;
+			req.sellUserId = ls_keeper.sellUserId;
+
+			getGeolocation();
+		}else{
+
+			// 若未绑定客户渠道，则所在城市为当用户前定位区域，所有客户渠道收缩。
+			req.countryName = '中国';
+			req.cityName = localStorage.getItem('user_city') || '深圳';
+			getGeolocation();
+
+		}
+
+
+		!function(u){
+			// 如果是android，重写滚动
+			if(u.indexOf('Android') > -1 || u.indexOf('Adr') > -1){
+				IScroll = function (){this.refresh = function(){}}
+			}
+
+			if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+				mui.init({
+					pullRefresh: {
+						container: '#container',
+						down: {
+							contentdown: "", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+							contentover: "", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+							contentrefresh: "", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+						},
+						up: {
+							contentrefresh: "", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+							contentnomore: '', //可选，请求完毕若没有更多数据时显示的提醒内容；
+							callback: function(){}
+						}
+					}
+				});
+			}
+		}(navigator.userAgent)
+
+
+		
+
+		// 左侧标签切换
+		mui('body').on('tap','.keeper_side a',function(){
+
+			var id = this.getAttribute('for');
+			var that = this;
+			var item = document.getElementById('section_'+id);
+			var acti1 = this.parentNode.querySelector('a.active');
+			var acti2 = item ? item.parentNode.querySelector('section.active') : null;
+
+			if(acti1 == this){return false;}
+
+			var setActive = function(){
+				acti1 && acti1.classList.remove('active');
+				acti2 && acti2.classList.remove('active');
+
+				item && item.classList.add('active');
+				that.classList.add('active');
+
+				acti1 = null;
+				acti2 = null;
+				item = null;
+				that = null;
+
+			}
+
+			if(this.getAttribute('loaddata')){
+				setActive();
+			}else{
+				service({type:'getKeeperArea',areaId:id},function(json){	
+
+
+					var tpl = '<dl id="{{id}}"><dt><a><strong>{{name}}</strong><span></span></a></dt><dd><a subdata="{{sellUserList}}" class="active_{{ifButler}}" sellUserId="{{id}}" clientPeerId="{{clientPeerId}}"><div class="img"><img src="../images/destine_1.jpg"></div><h3>{{name}}</h3><p>手机:{{mobile}}</p><span><i class="icon icon-xingzhuang94"></i></span></a></dd></dl>';
+					var html = window.tplEngine(json.data,tpl);
+
+					item.innerHTML = html || '<h6><i class="icon icon-p-noclass" ></i><span>暂无记录</span></h6>';
+
+					that.setAttribute('loaddata','true');
+					setActive();
+				});
+			
+
+			}
+
+			
+
+			return false;
+		});
+
+
+		// 右侧标签展开与收起
+		mui('body').on('tap','.keeper_main dt a',function(){
+
+			var dl = this.closest('dl');
+
+			if(dl.classList.contains('active')){
+				dl.classList.remove('active');
+			}else{
+
+				if(dl.getAttribute('loaddata')){
+					dl.classList.add('active');
+				}else{
+					service({type:'getKeeperSell',clientPeerId:dl.getAttribute('id')},function(json){	
+
+						var tpl = '<a class="active_{{ifButler}}" sellUserId="{{id}}" clientPeerId="{{clientPeerId}}"><div class="img"><img src="../images/destine_1.jpg"></div><h3>{{name}}</h3><p>手机:{{mobile}}</p><span><i class="icon icon-xingzhuang94"></i></span></a>';
+
+						var html = window.tplEngine(json.data,tpl)
+
+						dl.querySelector('dd').innerHTML = html || '<p class="keeper_nodata">无记录</p>';
+						dl.setAttribute('loaddata','true')
+						dl.classList.add('active');
+						
+					});
+				
+				}
+
+
+
+			}
+			return false;
+		});
+
+
+
+		// 顶部链接点击事件
+		mui('body').on('tap','.keeper h2 a',function(){
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {href: this.getAttribute('href')});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+
+
+		// 点击更换管家
+		mui('body').on('tap','.keeper_main dd a',function(){
+
+			var acti = document.querySelector('.keeper_main a.active_1');
+			// var determine = document.querySelector('.determine');
+
+			acti && acti.classList.remove('active_1');
+			this.classList.add('active_1');
+			// determine.style.display = 'block';
+
+
+			// 6.52 绑定“我的管家”
+			service({
+				"type" : "setKeeper",
+				"clientPeerId" : this.getAttribute('clientPeerId'),
+				"sellUserId" : this.getAttribute('sellUserId')
+			},function(json){
+				if(json.ret){
+					
+					// 保存管家信息
+					var data = json.data;
+					data.countryName =  req.countryName ;
+					data.cityName =  req.cityName ;
+
+					localStorage.setItem('user_keeper',JSON.stringify(data));
+					mui.fire(plus.webview.getLaunchWebview(),'selectKeeper',data);
+					plus.ui.toast("已指定私旅管家");
+
+					mui.back();
+				}else{
+					plus.ui.toast(json.msg);
+				}
+
+			});
+
+			return false;
+		});
+
+
+		// 更管家所在城市
+		window.addEventListener('selectCity',function(event){
+			
+			var detail = event.detail;
+			var elem = document.querySelector("#template_title a");
+
+			elem.setAttribute('href','keeper_city.html?city='+detail.value);
+			elem.querySelector('b').innerHTML = detail.value;
+			req.areaId = detail.id;
+			delete req.countryName;
+			delete req.cityName;
+
+			getGeolocation();
+
+		});
+
+	</script>
+
+
+	
+</body>
+</html>

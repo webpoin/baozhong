@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>search</title>
+	<style type="text/css">
+		body{background-color: #fff;}
+		header{z-index: 9999;}
+		#container{top: 64px;bottom: 0px;}
+		#container .scroll{padding-bottom: 10px;}
+		.mui-pull-bottom-pocket{display: none;}
+	</style>
+</head>
+<body>
+
+
+	<header>
+		<form>
+			<label>
+				<i class="icon icon-yuanjiaojuxing1"></i>
+				<input type="text" placeholder="目的地" id="keyWord" value="">
+			</label>
+			<input type="submit" value="搜索">
+		</form>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+	</header>
+
+
+	<!-- <li><a href="#">新几内来古国</a></li>
+	<li><a href="#">塞班岛</a></li>
+	<li><a href="#">哈尔滨</a></li> -->
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			subpages: [
+				{
+					url: 'search_main.html',
+					id: 'search_main',
+					styles: {top: 64,bottom: 0,bounce: 'vertical',bounceBackground:'#FFFFFF'}
+				}
+			],
+		});
+
+		// 搜索
+		mui('body').on('submit','form',function(){
+
+			var key = document.getElementById('keyWord').value;
+			if(!key){return;}
+			mui.fire(plus.webview.getWebviewById('search_main'), 'search', {key:key});
+			return false;
+		});
+
+	</script>
+
+
+	
+</body>
+</html>

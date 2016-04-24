@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">
+		body{background-color: #fff;}
+		#container{top: 64px;bottom: 0px;left: 75px;width: auto;right: 0;}
+		#container .scroll{padding-bottom: 10px;}
+		#container section{display: none;}
+		#container section.active{display: block;}
+		.mui-pull-bottom-pocket{display: none;}
+	</style>
+	<title>Document</title>
+
+</head>
+<body>
+
+
+	<header>
+		<h2>目的地</h2>
+	</header>
+
+
+<!-- 	<section class="destine_side">
+		<cite>
+			<a href="#">热门</a>
+			<a href="#">周边</a>
+			<a href="#">国内</a>
+			<a href="#" class="active">马尔代夫</a>
+			<a href="#">欧洲</a>
+			<a href="#">美洲</a>
+			<a href="#">韩国</a>
+			<a href="#">日本</a>
+			<a href="#">泰国</a>
+			<a href="#">东南亚</a>
+			<a href="#">南亚</a>
+			<a href="#">港澳</a>
+			<a href="#">台湾</a>
+			<a href="#">台湾</a>
+			<a href="#">台湾</a>
+			<a href="#">台湾</a>
+			<a href="#">台湾</a>
+		</cite>
+	</section> -->
+
+	<section class="destine_side">
+		<cite class="template" id="destine_side">
+			<a href="{{id}}">{{name}}</a>
+		</cite>
+	</section>
+
+	<div class="pullRefresh" id="container">
+
+		<div class="scrollbox" id="destine_main">
+			<section class="destine" id="{{id}}">
+				<dl subdata="{{themeList}}">
+					<dt><i class="icon icon-xingzhuang132"></i>{{name}}</dt>
+					<dd>
+						<a href="line.html" subdata="{{destList}}">{{name}}</a>
+					</dd>
+				</dl>
+			</section>
+		</div>
+
+
+	<div>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+		mui.init({
+			swipeBack: false,
+			pullRefresh: {
+				container: '#container',
+				down: {
+					contentdown: "下拉可以刷新", //可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+					contentover: "释放立即刷新", //可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+					contentrefresh: "正在刷新...", //可选，正在刷新状态时，下拉刷新控件上显示的标题内容
+				},
+				up: {
+					contentrefresh: "正在加载...", //可选，正在加载状态时，上拉加载控件上显示的标题内容
+					contentnomore: '没有更多数据了', //可选，请求完毕若没有更多数据时显示的提醒内容；
+					callback: function(){}
+				}
+			}
+		});
+
+
+		// 6.34 查找分类目的地
+		service({
+			"type" : "goal",
+			"start":0,
+			"limit":10
+		},function(json){
+			// 替换模板
+			var template_side = document.getElementById('destine_side');
+			var template_main = document.getElementById('destine_main');
+			window.tplExchange(template_side,json.data,!json.ret);
+			window.tplExchange(template_main,json.data,!json.ret);
+			mui.trigger(document.querySelector('.destine_side cite a'),'tap');
+		});
+
+
+
+		// 链接点击事件
+		mui('body').on('tap','a',function(){
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {href: this.getAttribute('href')});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+
+
+
+		// 左侧标签切换
+		mui('.destine_side cite').on('tap','a',function(){
+
+			var acti = this.parentNode.querySelector('a.active');
+			if(acti == this){return false;}
+
+			acti && acti.classList.remove('active');
+			this.classList.add('active');
+
+			var item = document.getElementById(this.getAttribute('href'));
+			var acti2 = item.parentNode.querySelector('section.active');
+
+			acti2 && acti2.classList.remove('active');
+			item.classList.add('active');
+
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+			setTimeout(function(){plus.nativeUI.closeWaiting();},1000);
+
+			return false;
+		});
+
+
+
+	</script>
+
+
+
+	
+</body>
+</html>

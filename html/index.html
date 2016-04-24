@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style>
+		header h2{position: absolute;}
+		header span{position: absolute;}
+		.tab_outer{position: absolute;left: 0;top: 0;bottom: 50px;right: 0;overflow: hidden;}
+		.tab_box{margin-top: 200%; position: absolute;left: 0;top: 0;height: 100%;width: 100%;overflow: hidden;}
+		.tab_box.active{margin-top: 0;}
+		#home .scroll{position: absolute;top: 64px;left: 0;width: 100%;bottom: 0;}
+		#sort .scroll{position: absolute;top: 64px;left: 0;width: 100%;bottom: 0;}
+		#sort .sort{min-height: 100%;padding-top: 1px;}
+		#user .scroll{min-height: 100%;padding-bottom: 10px;}
+
+		.mui-android #home .scroll{overflow: auto;}
+		.mui-android #sort .scroll{overflow: auto;}
+		.mui-android #user{overflow: auto;}
+		.mui-android #goal .destine_side{overflow: auto;}
+		.mui-android #goal .destine_main{overflow: auto;}
+		.mui-android .destine_main .scroll{padding-top: 0;}
+
+	</style>
+	<title>Document</title>	
+</head>
+<body>
+
+
+
+	<div class="loading"><img src="../images/loading.gif" alt=""></div>
+	
+
+	<div class="tab_outer">
+		<div id="home" class="tab_box link active">
+			
+			<section class="home_header" id="home_header">
+				<a href="city.html?city={{startCity}}" class="js-home_city"><b>{{startCity}}</b><i class="icon icon-jiantou"></i></a>
+				<form>
+					<a class="home_header_input" href="search.html"><i class="icon icon-yuanjiaojuxing1"></i>目的地</a>
+				</form>
+			</section>
+			
+
+			<div class="scroll">
+
+				<div class="scroll_inside">
+					<section class="home_banner">
+						<div id='mySwipe' >
+							<div class='swipe-wrap template' id="banner">
+								<div><a href="line.html?productId={{productId}}&supplierId={{supplierId}}" type="{{type}}"><img data-src="{{imageUrl}}" ></a></div>
+							</div>
+						</div>
+					</section>
+
+
+
+					<section class="home_sort">
+						<ul>
+							<li>
+								<a href="header.html?url=sort_list&title=周边游&lineCategoryId=1&viewId=sort_list">
+									<i class="icon icon-xingzhuang93"></i>
+									<span>周边游</span>
+								</a>
+							</li>
+							<li>
+								<a href="header.html?url=sort_list&title=国内游&lineCategoryId=2&viewId=sort_list">
+									<i class="icon icon-xingzhuang91"></i>
+									<span>国内游</span>
+								</a>
+							</li>
+							<li>
+								<a href="header.html?url=sort_list&title=出境游&lineCategoryId=3&viewId=sort_list">
+									<i class="icon icon-xingzhuang92"></i>
+									<span>出境游</span>
+								</a>
+							</li>
+							<li>
+								<a href="header.html?url=sort_list&title=港澳游&lineCategoryId=4&viewId=sort_list">
+									<i class="icon icon-xingzhuang90"></i>
+									<span>港澳游</span>
+								</a>
+							</li>
+
+						</ul>
+						<h6>
+							<strong>今日热点</strong>
+							<i class="icon icon-xingzhuang88"></i>
+							<span class="template" id="sort_notice">
+								<a href="line.html?productId={{productId}}&supplierId={{supplierId}}" >{{title}}</a>
+							</span>
+						</h6>
+					</section>
+
+					<section class="home_recom">
+						<h2>
+							<strong><i class="icon icon-xingzhuang212"></i>推荐</strong>
+						</h2>
+						<ul id="home_recom1" style="display: block;">
+							<li>
+								<a href="line.html?productId={{productId}}&supplierId={{supplierId}}">
+									<div class="img"><img data-src="{{lineImageUrl}}" alt=""></div>
+									<h3>{{name}}</h3>
+									<h4><span>￥</span><em>{{minPrice}}</em> <span>起</span></h4>
+									<p>{{lineNameRemark}}</p>
+									<h6><i class="icon icon-dizhi"></i>{{startingCityName}}</h6>
+									<cite >
+										<span class="recom{{0}}" subdata="{{tagIdList}}"><b></b></span>
+									</cite>
+								</a>
+							</li>
+						</ul>
+					</section>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="sort" class="tab_box link">
+			
+			<header>
+				<h2>分类</h2>
+				<span><a href="search.html"><i class="icon icon-yuanjiaojuxing1"></i></a></span>
+			</header>
+
+			<div class="scroll">
+				<section class="sort">
+					<ul>
+						<li>
+							<a href="header.html?url=sort_list&title=周边游&lineCategoryId=1&viewId=sort_list">
+								<i class="icon icon-xingzhuang93"></i>
+								<h3>周边游</h3>
+								<p>网罗广东美景美食，两三天也给自己充个电。</p>
+							</a>
+						</li>
+						<li>
+							<a href="header.html?url=sort_list&title=港澳游&lineCategoryId=4&viewId=sort_list">
+								<i class="icon icon-xingzhuang90"></i>
+								<h3>港澳游</h3>
+								<p>大三八、兰桂坊、迪士尼、海洋公园，让小宝带你了解缤纷十色的香港澳门。</p>
+							</a>
+						</li>
+						<li>
+							<a href="header.html?url=sort_list&title=国内游&lineCategoryId=2&viewId=sort_list">
+								<i class="icon icon-xingzhuang91"></i>
+								<h3>国内游</h3>
+								<p>跟着小宝领略大中华的美食和美景，还有更多想不到的特色文化、民俗风情!</p>
+							</a>
+						</li>
+						<li>
+							<a href="header.html?url=sort_list&title=出境游&lineCategoryId=3&viewId=sort_list">
+								<i class="icon icon-xingzhuang92"></i>
+								<h3>出境游</h3>
+								<p>小宝带你看世界，专业、优质、实惠。</p>
+							</a>
+						</li>
+						
+					</ul>
+				</section>
+			</div>
+		</div>
+
+
+		<div id="goal" class="tab_box ">
+			<header>
+				<h2>目的地</h2>
+			</header>
+
+			<section class="destine_side">
+				<cite class="template" id="destine_side">
+					<a for="{{id}}">{{name}}</a>
+				</cite>
+			</section>
+
+			<div class="destine_main link">
+				<div class="scroll" id="destine_main">
+					<section id="{{id}}">
+						<dl subdata="{{themeList}}">
+							<dt><i class="icon icon-xingzhuang132"></i>{{name}}</dt>
+							<dd><a href="header.html?title={{name}}&url=destine_list&id={{id}}" subdata="{{destList}}">{{name}}</a></dd>
+						</dl>
+					</section>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="user" class="tab_box " >
+			
+			<div class="scroll">
+				<section class="user_header">
+					<div class="img"><img src="../images/user_header.jpg" ></div>
+					<div id="user_tpl" class="user_header_login" >
+						<h2><a href="header.html?title=我的信息&url=user_info"><img data-src="{{imageUrl}}" ></a></h2>
+						<h3 class="user_header_sex{{sex}}">{{name}} 
+							<i class="icon icon-nanxing"></i>
+							<i class="icon icon-xingzhuang222"></i>
+						</h3>
+						<p>{{mobile}}</p>
+					</div>
+					<div class="user_header_unlogin">
+						<h2><a href="login.html" viewId="login"><img src="../images/user_pic.png" ></a></h2>
+						<h3><a href="login.html" viewId="login" class="btn">请登陆</a></h3>	
+					</div>
+				</section>
+
+				<section class="user">
+					<ul>
+						<li class="link needlogin">
+							<a href="header.html?title=我的订单&url=user_order&viewId=user_order">
+								<i class="icon icon-dingdan"></i>
+								<strong>我的订单</strong>
+							</a>
+						</li>
+						<li class="link needlogin">
+							<a href="header.html?title=我的收藏&url=user_collect">
+								<i class="icon icon-shoucang"></i>
+								<strong>我的收藏</strong>
+							</a>
+						</li>
+						<li class="link needlogin">
+							<a href="header.html?title=我的优惠券&url=user_coupon">
+								<i class="icon icon-youhuiquan"></i>
+								<strong>我的优惠券</strong>
+							</a>
+						</li>
+						<li class="link needlogin">
+							<a href="header.html?title=常旅资料&url=user_contacts&viewId=user_contacts">
+								<i class="icon icon-wodelianxiren"></i>
+								<strong>常旅资料</strong>
+							</a>
+						</li>
+						<li class="link">
+							<a href="keeper.html" viewId="keeper">
+								<i class="icon icon-guanjia"></i>
+								<strong>我的管家</strong>
+								<p id="user_keeper" class="template">
+									<span >{{clientPeerName}} {{sellUserName}}</span>
+								</p>
+							</a>
+						</li>
+						<li class="link js-password">
+							<a href="change_pwd.html">
+								<i class="icon icon-mima"></i>
+								<strong>修改密码</strong>
+							</a>
+						</li>
+						<li class="js-addlogin">
+							<a class="js-quit">
+								<i class="icon icon-tuichuzhanghao"></i>
+								<strong>退出账号</strong>
+							</a>
+						</li>
+					</ul>
+					<div class="user_copyright">
+						宝中旅游 <br>
+						Copyright &copy; 2006-2016 
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+
+
+	<section class="call" id="keeper" >
+		<cite>
+			<img data-src="{{imageUrl}}" alt="">
+			<h3>我的管家：{{sellUserName}}</h3>
+			<p>营业部：{{clientPeerName}}</p>
+			<!-- <p>地址：{{address}}</p> -->
+			<p>电话：{{mobile}}</p>
+		</cite>
+		<div class="call_link">
+			<a class="link" href="keeper.html" viewId="keeper"><i class="icon icon-qiehuan"></i>切换管家</a>
+			<a class="btn js-call" href="{{mobile}}"><i class="icon icon-xingzhuang94"></i>拨号</a>
+		</div>
+	</section>
+
+
+	<footer>
+		<nav>
+			<a for="home" class="active">
+				<i class="icon icon-iconbarhomeoff1"></i>
+				<i class="icon icon-iconbarhome1"></i>
+				<span>首页</span>
+			</a>
+			<a for="sort" >
+				<i class="icon icon-iconbarserviceon"></i>
+				<i class="icon icon-iconbarserviceon1"></i>
+				<span>分类</span>
+			</a>
+			<a for="call" class="footer_call"><i class="icon icon-guanjia"></i></a>
+			<a for="goal" >
+				<i class="icon icon-xingzhuangdon"></i>
+				<i class="icon icon-xingzhuang25on"></i>
+				<span>目的地</span>
+			</a>
+			<a for="user" >
+				<i class="icon icon-myon"></i>
+				<i class="icon icon-my"></i>
+				<span>我的</span>
+			</a>
+		</nav>
+	</footer>
+
+
+	<div class="addkeeper" id="addkeeper">
+		<cite>
+			<img src="../images/keeper.png" alt="">
+			<p>私旅管家<br>1对1  服务至心</p>
+			<h6>
+				<a class="link" href="keeper.html" viewId="keeper">选择管家</a>
+				<a class="close">暂不选择</a>
+			</h6>
+		</cite>
+	</div>
+
+
+
+
+
+
+	<script type="text/javascript" src="../js/service.js"></script>
+	<script type="text/javascript" src="../js/iscroll-lite.js"></script>
+	<script type="text/javascript" src="../js/swipe.js"></script>
+	<script type="text/javascript" src="../js/mui.min.js"></script>
+	<script type="text/javascript" src="../js/update.js"></script>
+	<script type="text/javascript" src="../js/index.js"></script>
+</body>
+</html>

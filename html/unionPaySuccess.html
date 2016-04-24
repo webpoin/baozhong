@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<style type="text/css">
+		html,body{margin: 0;height: 100%;}
+		.box {text-align: center;white-space: nowrap;overflow: hidden;position: relative;height: 100%;}
+		.box:before{content: '';display: inline-block;width: 1px;height: 100%;vertical-align: middle;}
+		.box cite{display: inline-block;vertical-align: middle;font-style: normal;}
+		.box p{line-height: 30px;font-size: 12px;}
+		.box img{width: 120px;}
+
+	</style>
+</head>
+<body>
+
+	<div class="box" style="display: none;">
+		<cite>
+			<img src="../images/pay_success.png" alt="">
+			<p>正在为您查询支付结果，请勿关闭此页面</p>
+		</cite>
+	</div>
+
+
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/pingpp.js" ></script>
+	<script type="text/javascript">
+
+
+		var data = localStorage.getItem('union');
+		localStorage.setItem('union','');
+
+		// 有数据，则跳银联支付
+		if(data){
+
+			pingpp.createPayment(JSON.parse(data), function(result, err) {
+				console.log(result + '-----' + JSON.stringify(err))
+			});
+
+		}else{ // 无数据，则返回上层
+			document.querySelector('.box').style.display = 'block';
+			setTimeout(function(){
+				var line_write =  plus.webview.getWebviewById('line_write');
+				var order_detail =  plus.webview.getWebviewById('order_detail');
+				line_write && line_write.reload();
+				order_detail && order_detail.reload();
+				mui.fire(plus.webview.currentWebview().parent(),'back');
+				plus.ui.toast('银联支付成功！');
+			},2000);
+		}
+	</script>
+</body>
+</html>

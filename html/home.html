@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+</head>
+<body>
+
+
+	<section class="home_header">
+		<a href="header.html?title=选择出发城市&url=city">深圳<i class="icon icon-jiantou"></i></a>
+		<form action="search.html">
+			<input type="text" placeholder="目的地">
+			<button type="submit"><i class="icon icon-yuanjiaojuxing1"></i></button>
+		</form>
+	</section>
+
+	<section class="home_banner">
+		<div id='mySwipe' >
+			<div class='swipe-wrap template' id="banner">
+				<div><a href="line.html"><img data-src="{{imageUrl}}" ></a></div>
+			</div>
+		</div>
+	</section>
+
+
+
+	<section class="home_sort">
+		<ul>
+			<li>
+				<a href="sort_list.html?title=出境游">
+					<i class="icon icon-xingzhuang92"></i>
+					<span>出境游</span>
+				</a>
+			</li>
+			<li>
+				<a href="sort_list.html?title=港澳游">
+					<i class="icon icon-xingzhuang90"></i>
+					<span>港澳游</span>
+				</a>
+			</li>
+			<li>
+				<a href="sort_list.html?title=国内游">
+					<i class="icon icon-xingzhuang91"></i>
+					<span>国内游</span>
+				</a>
+			</li>
+			<li>
+				<a href="sort_list.html?title=周边游">
+					<i class="icon icon-xingzhuang93"></i>
+					<span>周边游</span>
+				</a>
+			</li>
+		</ul>
+		<h6>
+			<strong>今日热点</strong>
+			<i class="icon icon-xingzhuang88"></i>
+			<span class="template" id="sort_notice">
+				<a href="line.html?id={{productId}}" >{{title}}</a>
+			</span>
+		</h6>
+	</section>
+
+
+	<!-- <section class="home_recom">
+		<h2>
+			<strong><i class="icon icon-xingzhuang212"></i>推荐</strong>
+			<span>
+				<a href="home/sort_list.html?title=出境游" class="active" for="home_recom1">出境游</a>
+				<a href="home/sort_list.html?title=港澳游" for="home_recom2">港澳游</a>
+				<a href="home/sort_list.html?title=国内游" for="home_recom3">国内游</a>
+				<a href="home/sort_list.html?title=周边游" for="home_recom4">周边游</a>
+			</span>
+		</h2>
+
+		<ul id="home_recom1" style="display: block;">
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_1.jpg" alt=""></div>
+					<h3>[五一]深度意瑞法12或13日游</h3>
+					<h4><span>￥</span><em>14899</em> <span>起</span></h4>
+					<p>最高立减3000元 4至5星 庄园酒店 五渔村 少女峰 全含</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_2.jpg" alt=""></div>
+					<h3>[标准]法瑞意梵10日游</h3>
+					<h4><span>￥</span><em>9999</em> <span>起</span></h4>
+					<p>广深出发，错峰出游，西欧首选，人气线路</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_3.jpg" alt=""></div>
+					<h3>[五一]法瑞意10或11日游</h3>
+					<h4><span>￥</span><em>19599</em> <span>起</span></h4>
+					<p>香港直飞，雪山午餐，四五星，无线WIFI，全含</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_4.jpg" alt=""></div>
+					<h3>[标准]法瑞意10或11日游</h3>
+					<h4><span>￥</span><em>9699</em> <span>起</span></h4>
+					<p>香港直飞，雪山午餐，四五星，无线WIFI，全含</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_5.jpg" alt=""></div>
+					<h3>[豪华]法瑞意10日游</h3>
+					<h4><span>￥</span><em>11999</em> <span>起</span></h4>
+					<p>广深出发，少女峰，四五星，双宫，双火车，全含</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_6.jpg" alt=""></div>
+					<h3>[五一]法瑞意德11日游</h3>
+					<h4><span>￥</span><em>8919</em> <span>起</span></h4>
+					<p>国泰直飞，法拉利列车，新天鹅堡，枫丹白露，境外WIFI</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_7.jpg" alt=""></div>
+					<h3>[标准]英-西欧11国14天11晚游</h3>
+					<h4><span>￥</span><em>14199</em> <span>起</span></h4>
+					<p>全景西欧，一次指模，大英博物馆，英国直飞西欧</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_1_2.jpg" alt=""></div>
+					<h3>[标准]云南丽江5天4晚跟团游</h3>
+					<h4><span>￥</span><em>2300</em> <span>起</span></h4>
+					<p>全程五星酒店,啤酒任喝,炸鸡任吃......</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_9.jpg" alt=""></div>
+					<h3>[标准]欧洲十国13或14日游</h3>
+					<h4><span>￥</span><em>9699</em> <span>起</span></h4>
+					<p>广深出发，郁金香花展，错峰出游首选</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2.png" alt=""></div>
+					<h3>[标准]西葡10日游</h3>
+					<h4><span>￥</span><em>9999</em> <span>起</span></h4>
+					<p>香港往返，马德里皇宫，阿尔汉布拉宫，住宿升级</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+
+		</ul>
+
+		<ul id="home_recom2" >
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_1.jpg" alt=""></div>
+					<h3>[标准]港澳5日游</h3>
+					<h4><span>￥</span><em>1747</em> <span>起</span></h4>
+					<p>观光海洋公园，香港迪士尼乐园，品西式团餐，乐享双园</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_2.jpg" alt=""></div>
+					<h3>[标准]香港2日游</h3>
+					<h4><span>￥</span><em>114</em> <span>起</span></h4>
+					<p>纯玩半自助，太平山，1天自由活动</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_3.png" alt=""></div>
+					<h3>香港城市观光-畅游海洋公园2日游</h3>
+					<h4><span>￥</span><em>2300</em> <span>起</span></h4>
+					<p>全天海洋公园     可升级酒店</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_4.jpg" alt=""></div>
+					<h3>[五一]香港3日游</h3>
+					<h4><span>￥</span><em>1288</em> <span>起</span></h4>
+					<p>畅享双园，住四星酒店，免L签</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_5.jpg" alt=""></div>
+					<h3>[标准]香港2日游</h3>
+					<h4><span>￥</span><em>2300</em> <span>起</span></h4>
+					<p>畅游香港迪士尼乐园、海洋公园，含小费免名单费</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_6.jpg" alt=""></div>
+					<h3>[标准]香港2日游</h3>
+					<h4><span>￥</span><em>1538</em> <span>起</span></h4>
+					<p>游览香港精华景点，住四星酒店，含小费、免L签</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_4.jpg" alt=""></div>
+					<h3>[五一]香港3日游</h3>
+					<h4><span>￥</span><em>1288</em> <span>起</span></h4>
+					<p>畅享双园，住四星酒店，免L签</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_3.png" alt=""></div>
+					<h3>香港城市观光-畅游海洋公园2日游</h3>
+					<h4><span>￥</span><em>2300</em> <span>起</span></h4>
+					<p>全天海洋公园     可升级酒店</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_2.jpg" alt=""></div>
+					<h3>香港城市观光-畅游海洋公园2日游</h3>
+					<h4><span>￥</span><em>2300</em> <span>起</span></h4>
+					<p>全天海洋公园     可升级酒店</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2_1.jpg" alt=""></div>
+					<h3>[标准]港澳5日游</h3>
+					<h4><span>￥</span><em>1747</em> <span>起</span></h4>
+					<p>观光海洋公园，香港迪士尼乐园，品西式团餐，乐享双园</p>
+					
+					<h6><i class="icon icon-dizhi"></i>港澳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+		</ul>
+
+		<ul id="home_recom3" >
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4.jpg" alt=""></div>
+					<h3>[标准]版纳-昆大丽4飞8日游</h3>
+					<h4><span>￥</span><em>1259</em> <span>起</span></h4>
+					<p>庭院酒店，版纳飞丽江，不走回头路</p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2.png" alt=""></div>
+					<h3>[五一]昆大丽-双廊双飞6日游</h3>
+					<h4><span>￥</span><em>1119</em> <span>起</span></h4>
+					<p>两大表演，两晚挂五，一晚温泉，双人立减</p>
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_3.jpg" alt=""></div>
+					<h3>[五一]昆明-普洱-版纳3飞6日游</h3>
+					<h4><span>￥</span><em>2729</em> <span>起</span></h4>
+					<p>挂五酒店 免费温泉 玉龙雪山大索 当地特色餐 管家服务 </p>
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4.jpg" alt=""></div>
+					<h3>[标准]西双版纳-昆大丽四飞8日游</h3>
+					<h4><span>￥</span><em>699</em> <span>起</span></h4>
+					<p>风花雪月之城 0购物深度游 全程商务车 自由度高 柔软丽江</p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_5.jpg" alt=""></div>
+					<h3>[标准]云南丽江5天4晚跟团游</h3>
+					<h4><span>￥</span><em>7899</em> <span>起</span></h4>
+					<p>住小熊猫庄园独栋木屋，升级喜来登，边境美食派对</p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_2.png" alt=""></div>
+					<h3>[五一]昆大丽-双廊双飞6日游</h3>
+					<h4><span>￥</span><em>999</em> <span>起</span></h4>
+					<p>牛人专线 昆明飞版纳 版纳飞丽江 不走回头路 大理精品酒店 明星导游 </p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_7.jpg" alt=""></div>
+					<h3>[标准]云南丽江5天4晚跟团游</h3>
+					<h4><span>￥</span><em>588</em> <span>起</span></h4>
+					<p>住小熊猫庄园独栋木屋，升级喜来登，边境美食派对</p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_8.jpg" alt=""></div>
+					<h3>[五一]昆明-普洱-版纳3飞6日游</h3>
+					<h4><span>￥</span><em>1888</em> <span>起</span></h4>
+					<p>庭院酒店，版纳飞丽江，不走回头路</p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_9.jpg" alt=""></div>
+					<h3>[标准]云南丽江5天4晚跟团游</h3>
+					<h4><span>￥</span><em>1828</em> <span>起</span></h4>
+					<p>金牌口碑线路 升级飞机 昆明直达丽江 家庭首选 全景风情 舌尖上的云南 </p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_5.jpg" alt=""></div>
+					<h3>[五一]昆大丽-双廊双飞6日游</h3>
+					<h4><span>￥</span><em>1999</em> <span>起</span></h4>
+					<p>金牌口碑线路 火车直达丽江 心中日月 舌尖上的云南 </p>
+					
+					<h6><i class="icon icon-dizhi"></i>云南</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+		</ul>
+
+		<ul id="home_recom4" >
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_1.jpg" alt=""></div>
+					<h3>[元宵]阳江海陵岛十里银滩放风筝-渔家乐游船-泡山泉湾温泉2日游</h3>
+					<h4><span>￥</span><em>352</em> <span>起</span></h4>
+					<p>轻松出行 十里银滩 赤坎古镇 放风筝 住海陵岛 泡山泉湾温泉 </p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_2.jpg" alt=""></div>
+					<h3>游广东小黄山南昆山2日游</h3>
+					<h4><span>￥</span><em>355</em> <span>起</span></h4>
+					<p>住柏祥森林酒店 泡高山温矿泉</p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_3.jpg" alt=""></div>
+					<h3>[标准]韶关丹霞山-南华寺-瑶族歌舞2日游</h3>
+					<h4><span>￥</span><em>440</em> <span>起</span></h4>
+					<p>浏览世界自然遗产 丹霞山</p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_4.jpg" alt=""></div>
+					<h3>[五一]肇庆七星岩-鼎湖山-踏青赏花美食2日游</h3>
+					<h4><span>￥</span><em>410</em> <span>起</span></h4>
+					<p>广东美丽山水</p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_5.jpg" alt=""></div>
+					<h3>[标准]桂林-阳朔-兴坪漓江-遇龙河-银子岩汽车3日游</h3>
+					<h4><span>￥</span><em>655</em> <span>起</span></h4>
+					<p>船游漓江 竹筏漂流 深圳出发</p>
+					
+					<h6><i class="icon icon-dizhi"></i>广西</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_6.jpg" alt=""></div>
+					<h3>[标准]珠海长隆海洋王国-圆明新园-石景山2日游</h3>
+					<h4><span>￥</span><em>1336</em> <span>起</span></h4>
+					<p>中山果园</p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_7.png" alt=""></div>
+					<h3>[标准]婺源-景德镇-南昌赏花双卧4日游</h3>
+					<h4><span>￥</span><em>2300</em> <span>起</span></h4>
+					<p>赏花  0购物 限额前10名预订2人减100</p>
+					
+					<h6><i class="icon icon-dizhi"></i>景德镇</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_8.jpg" alt=""></div>
+					<h3>[标准]珠海长隆海洋王国-中山故居-四季果园2日游</h3>
+					<h4><span>￥</span><em>706</em> <span>起</span></h4>
+					<p>品味广东 新型跟团游 最大海洋乐园 品中山美食 管家式服务 </p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_9.jpg" alt=""></div>
+					<h3>[标准]惠东巽寮湾-罗浮山-住高尔夫酒店2日游</h3>
+					<h4><span>￥</span><em>486</em> <span>起</span></h4>
+					<p>品味广东 新型跟团游 客家美食 住高尔夫酒店 山海同游 管家式服务</p>
+					
+					<h6><i class="icon icon-dizhi"></i>广东</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+			<li>
+				<a href="line.html">
+					<div class="img"><img src="../images/home_recom_4_10.jpg" alt=""></div>
+					<h3>[清明]深圳东部华侨城茶溪谷直通车1日游</h3>
+					<h4><span>￥</span><em>178</em> <span>起</span></h4>
+					<p>准时发班 上车点多 游玩时间充裕 </p>
+					
+					<h6><i class="icon icon-dizhi"></i>深圳</h6>
+					<cite>
+						<span class="recom"><i class="icon icon-xingzhuang213"></i><b>荐</b></span>
+						<span class="prefer"><i class="icon icon-xingzhuang213"></i><b>惠</b></span>
+					</cite>
+				</a>
+			</li>
+		</ul>
+	</section> -->
+
+
+	<section class="home_recom">
+		<h2>
+			<strong><i class="icon icon-xingzhuang212"></i>推荐</strong>
+<!-- 			<span>
+				<a href="home/sort_list.html?title=出境游" class="active" for="home_recom1">出境游</a>
+				<a href="home/sort_list.html?title=港澳游" for="home_recom2">港澳游</a>
+				<a href="home/sort_list.html?title=国内游" for="home_recom3">国内游</a>
+				<a href="home/sort_list.html?title=周边游" for="home_recom4">周边游</a>
+			</span> -->
+		</h2>
+
+		<ul id="home_recom1" style="display: block;">
+			<li>
+				<a href="line.html?id={{productId}}">
+					<div class="img"><img data-src="{{lineImageUrl}}" alt=""></div>
+					<h3>{{name}}</h3>
+					<h4><span>￥</span><em>{{minPrice}}</em> <span>起</span></h4>
+					<p>{{lineNameRemark}}</p>
+					
+					<h6><i class="icon icon-dizhi"></i>法国</h6>
+					<cite >
+						<span class="recom{{0}}" subdata="{{tagIdList}}"><i class="icon icon-xingzhuang213"></i><b></b>
+						</span>
+					</cite>
+				</a>
+			</li>
+		</ul>
+
+
+	</section>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/swipe.js"></script>
+	<script type="text/javascript">
+
+		// 取banner数据
+		service({
+			"type" : "banner",
+			"start":0,
+			"limit":10
+		},function(json){
+
+			// 替换模板
+			var template = document.getElementById('banner');
+			window.tplExchange(template,json.data,!json.ret);
+
+
+
+			// 幻灯片
+			var box = document.querySelector('.home_banner');
+			if(!box){return;}
+
+			// 元素
+			var item = Array.prototype.slice.call(box.querySelectorAll('.swipe-wrap div'),0);
+
+			// 根据item个数增加显示的点
+			var cite = document.createElement('cite');
+				cite.innerHTML = item.map(function(){return '<span></span>'}).join('');
+				box.appendChild(cite);
+
+
+			// 显示块
+			var span = Array.prototype.slice.call(box.querySelectorAll('cite span'),0);
+
+			// pure JS
+			var elem = document.getElementById('mySwipe');
+			window.mySwipe = Swipe(elem, {
+				startSlide: 1,
+				auto: 3000,
+				continuous: true,
+				callback: function(index, element) {
+				 	span.map(function(item,idx){
+						if(idx == index){
+							item.classList.add('active');
+						}else{
+							item.classList.remove('active');
+						}
+					});
+				},
+			});
+		});
+
+
+		// 广播数据
+		service({
+			"type" : "broadcasting",
+			"start" : 0,
+			"limit" : 10
+		},function(json){
+
+			// 替换模板
+			var template = document.getElementById('sort_notice');
+			window.tplExchange(template,json.data,!json.ret);
+
+
+			var parent = document.querySelector('.home_sort h6 span');
+			var item = parent.querySelectorAll('a');
+			var index = 0;
+
+			parent.style.WebkitTransition = 'all .2s ease ';
+			// 把第一个复制一份到末尾
+			parent.appendChild(item[0].cloneNode(true));
+
+			// 循环
+			setInterval(function(){
+
+				parent.style.top = -index * 32 + 'px';
+				index += 1;
+				if(index > item.length){
+					
+					index = 1;					
+					setTimeout(function(){	
+						parent.style.WebkitTransition = 'initial';
+						parent.style.top = '0px';
+						setTimeout(function(){parent.style.WebkitTransition = 'all .2s ease ';},10);
+					},5000);
+				}
+			},2000);
+
+		});
+
+
+		// 推荐线路[出境游]
+		service({
+			"type" : "recommend",
+			"lineCategoryId" : "3",
+			"start":0,
+			"limit":10
+		},function(json){
+			// 替换模板
+			var template = document.getElementById('home_recom1');
+			window.tplExchange(template,json.data,!json.ret);
+		});
+
+
+
+
+		mui.plusReady(function() {
+			mui.fire(plus.webview.getLaunchWebview(), 'init');
+		});
+
+
+		// 推荐标签切换
+		mui('.home_recom h2').on('tap','a',function(){
+
+
+			var acti = this.parentNode.querySelector('a.active');
+			if(acti == this){return false;}
+
+			acti.classList.remove('active');
+			this.classList.add('active');
+
+			document.getElementById(acti.getAttribute('for')).style.display = 'none';
+			document.getElementById(this.getAttribute('for')).style.display = 'block';
+
+			return false;
+		});
+
+
+		// 链接点击事件
+		mui('body').on('tap','a',function(){
+
+			var href = this.getAttribute('href');
+			if(!href){return;}
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {
+				href: this.getAttribute('href'),
+				subpage: !!this.getAttribute('subpage')
+			});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+	</script>
+		
+
+
+	
+</body>
+</html>

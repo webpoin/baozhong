@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<style type="text/css">.mui-pull-top-pocket{top: 64px;}</style>
+	<title>头部</title>
+</head>
+<body>
+
+
+	<header>
+		<h2>附加服务</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+	</header>
+
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+
+		var href = (function(l){
+			var p={};
+			return l.replace(/([^?&=]+)=([^?&=]+)/ig,function(a,b,c){p[b]=c;}),p;
+		})(decodeURI(location.href));
+
+		document.querySelector('header h2').innerHTML = href.title || '';
+
+		href.url = href.url || 'no';
+		mui.init({
+			subpages: [
+				{
+					url: href.url + '.html' + location.search,
+					id: href.viewId || href.url,
+					styles: {top: 64,bottom: 0,left:0,right:0,bounce: 'vertical',bounceBackground:'#F5F5F5'}
+				}
+			],
+		});
+
+
+		// mui.plusReady(function() {
+		// 	// 关闭等待窗
+		// 	plus.nativeUI.closeWaiting();
+		// 	plus.webview.currentWebview().show('pop-in',300);
+
+		// });
+
+		// // 返回
+		// mui.back = function() {
+		// 	plus.webview.currentWebview().hide('slide-out-right',300);
+		// 	plus.webview.close(href.url);
+		// };
+		// mui('header').on('tap', '.toback', function(e) {mui.back();});
+
+		// 退出
+		window.addEventListener('back',function(event){mui.back();});
+
+
+
+	</script>
+
+
+	
+</body>
+</html>

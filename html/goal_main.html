@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>Document</title>
+</head>
+<body>
+
+	<section class="destine">
+
+		<dl>
+			<dt><i class="icon icon-xingzhuang132"></i>热门推荐</dt>
+			<dd class="pic">
+				<a href="line.html">
+					<div class="img"><img src="../images/destine_1.jpg"></div>
+					<strong>越南</strong>
+					<span>东方巴黎</span>
+				</a>
+				<a href="line.html">
+					<div class="img"><img src="../images/destine_2.jpg"></div>
+					<strong>加拿大</strong>
+					<span>泥加拉瓜瀑布</span>
+				</a>
+				<a href="line.html">
+					<div class="img"><img src="../images/destine_3.jpg"></div>
+					<strong>桂林</strong>
+					<span>东方巴黎</span>
+				</a>
+				<a href="line.html">
+					<div class="img"><img src="../images/destine_4.jpg"></div>
+					<strong>青岛</strong>
+					<span>水上人家</span>
+				</a>
+			</dd>
+
+			<dt><i class="icon icon-xingzhuang132"></i>免签国家</dt>
+			<dd>
+				<a href="line.html">阿根廷</a>
+				<a href="line.html">比利时</a>
+				<a href="line.html">泰国</a>
+				<a href="line.html">纳米比亚</a>
+			</dd>
+
+			<dt><i class="icon icon-xingzhuang132"></i>海岸风情</dt>
+			<dd>
+				<a href="line.html">塞班岛</a>
+				<a href="line.html">菲律宾</a>
+				<a href="line.html">新加坡</a>
+				<a href="line.html">智利</a>
+				<a href="line.html">美达加斯加</a>
+			</dd>
+
+			<dt><i class="icon icon-xingzhuang132"></i>探秘美洲</dt>
+			<dd>
+				<a href="line.html">加拿大</a>
+				<a href="line.html">关岛基地</a>
+				<a href="line.html">黄石公园</a>
+				<a href="line.html">墨西哥自驾</a>
+				<a href="line.html">美国西海岸</a>
+				<a href="line.html">夏威夷</a>
+			</dd>
+		</dl>
+		
+
+	</section>
+
+
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		// 链接点击事件
+		mui('body').on('tap','a',function(){
+
+			var home = plus.webview.getLaunchWebview();
+			home && mui.fire(home, 'openFull', {
+				href: this.getAttribute('href'),
+				subpage: !!this.getAttribute('subpage')
+			});
+
+			// 显示等	待
+			plus.nativeUI.showWaiting('正在加载...');
+
+			return false;
+		});
+
+	</script>
+
+
+
+	
+</body>
+</html>

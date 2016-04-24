@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>线路详情</title>
+	<style type="text/css">
+		.line_header{background-color: rgba(12,163,240,0);position: fixed;left: 0;top: 0;width: 100%;z-index: 99;}
+		.line_header h2{background-color: transparent;}
+		.line h2 cite{left: 0;top: 0;width: 100%;z-index: 99;}
+		.line_ctrl{position: fixed;bottom: 0;left: 0;width: 100%;}
+		
+		#container{position: absolute;bottom: 60px;top: 0;width: 100%;overflow: hidden;}
+		#container .scroll{position: absolute;left: 0;top: 0;width: 100%;}
+		.mui-pull-bottom-pocket{display: none;}
+	</style>
+</head>
+<body>
+	
+	<div class="loading">
+		<h2>线路详情</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+		<img src="../images/loading.gif" alt="">
+	</div>
+
+	<header class="line_header">
+		<cite>
+			<h2>线路详情</h2>
+			<small class="toback"><i class="icon icon-fanhui"></i></small>
+			<span class="header_share"><i class="icon icon-fenxiang"></i>分享</span>
+		</cite>
+	</header>
+
+
+	<div class="line_tab">
+		<cite>
+			<a for="characteristic">产品特色</a>
+			<a for="introduction">行程介绍</a>
+			<a for="notice">须知</a>
+		</cite>
+	</div>
+
+	<div class="pullRefresh link" id="container" >
+		
+		<div class="scroll" >
+
+			<section class="line_banner" id="line_banner">
+				<section class="home_banner">
+					<div id='mySwipe' >
+						<div class='swipe-wrap' >
+							<div><img data-src="{{lineImageUrl}}" ></div>
+						</div>
+					</div>
+				</section>
+				<div class="line_banner_cnt">
+					
+					<h3>{{name}}</h3>
+					<h5>{{lineNameRemark}}</h5>
+					<h4>￥<em>{{minPrice}}</em></h4>
+					<p>
+						<span>{{days}}天</span>
+						<span>{{startingAreaName}}出发</span>
+						<span>{{lineCategoryName}}</span>
+					</p>
+					<h6 linePublishInfoId="{{linePublishInfoId}}" class="line_collect_{{hasFavorites}}"><i class="icon icon-shoucang"></i><span></span></h6>
+
+				</div>
+				
+			</section>
+
+
+			<section class="line_date" id="line_date">
+				<h2>
+					<a href="line_booking.html" class="js-booking">
+						<i class="icon icon-yuanjiaojuxing22kaobei"></i>
+						<strong>可选团期</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</a>
+				</h2>
+				<ul id="lineGroup">
+					<li subdata="{{useDateList}}"><a href="line_booking.html" date="{{date}}" class="js-booking">{{str}}</a></li>
+					<li class="line_group_nodata"><a>已售罄</a></li>
+					<li><a href="line_booking.html" class="js-booking">更多</a></li>
+				</ul>
+
+			</section>
+
+
+			<section class="line">
+				<h2>
+					<cite>
+						<a for="characteristic">产品特色</a>
+						<a for="introduction">行程介绍</a>
+						<a for="notice">须知</a>
+					</cite>
+				</h2>
+
+				<dl id="characteristic" class="active">
+					<dt>
+						<i class="icon icon-xingzhuang248"></i>
+						<strong>产品特色</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd>
+						<div class="line_art">{{travelCharacteristic}}</div>
+					</dd>
+				</dl>
+
+				<dl id="introduction" class="active">
+					<dt>
+						<i class="icon icon-xingcheng"></i>
+						<strong>行程介绍</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd class="line_stroke">
+						
+						<ul subdata="{{lineSchedules}}">
+							<li>
+								<h6><i class="icon icon-dizhi"></i></h6>
+								<h3><i class="icon icon-xingzhuang237"></i>第{{day}}天   {{startingCityName}} <i class="{{arrow}}">→</i> {{destinationAreaName}}</h3>
+								<div class="line_art">{{description}}</div>
+							</li>
+
+							<li class="resorts {{resorts}}">
+								<h3><i class="icon icon-haian"></i> 主要景区 </h3>
+								<cite subdata="{{scenicSpotSingles}}">
+									<div subdata="{{picUrls}}"><img data-src="{{0}}"></div>
+									<div class="price status_{{singleInfo}}">
+										<strong>{{scenicSpotName}} <small class="level_{{levelName}}">{{levelName}}级</small></strong>{{introduce}}
+									</div>
+								</cite>
+							</li>
+
+							<li class="{{food}}">
+								<h3><i class="icon icon-canyin"></i> 餐食 </h3>
+								<div class="subinfo"><b subdata="{{breakfastSingleInfos}}">{{0}}；</b><span>早餐：</span></div>
+								<div class="subinfo"><b subdata="{{lunchSingleInfos}}">{{0}}；</b><span>午餐：</span></div>
+								<div class="subinfo"><b subdata="{{supperSingleInfos}}">{{0}}；</b><span>晚餐：</span></div>
+							</li>
+
+							<li class="{{hotel}}">
+								<h3><i class="icon icon-jiudian"></i> 住宿 </h3>
+								<div class="subinfo"><p><b subdata="{{hotelNameInfos}}">{{0}}</b><span>酒店：</span></p></div>
+								<div class="subinfo"><b subdata="{{hotelRemarkInfos}}">{{0}}；</b><span>备注：</span></div>
+							</li>
+
+							<li class="{{traffic}}">
+								<h3><i class="icon icon-bus"></i> 交通 </h3>
+								<div class="subinfo"><p><b subdata="{{trainNoInfos}}">{{0}} </b><span>火车：</span></p></div>
+								<div class="subinfo"><b subdata="{{trainRemarkInfos}}">{{0}}；</b><span>备注：</span></div>
+								<div class="subinfo"><p><b subdata="{{flightNoInfos}}">{{0}} </b><span>飞机：</span></p></div>
+								<div class="subinfo"><b subdata="{{flightRemarkInfos}}">{{0}}；</b><span>备注：</span></div>
+							</li>
+
+
+						</ul>
+					</dd>
+				</dl>
+
+
+				<dl id="notice" class="active">
+					<dt>
+						<i class="icon icon-feiyongshuoming"></i>
+						<strong>费用说明</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd>
+						<div class="line_art">{{feeIntroduce}}</div>
+						<div class="line_art"><strong>费用包含：</strong><br>{{feeInclude}}</div>
+						<div class="line_art"><strong>费用不包含：</strong><br>{{feeExclude}}</div>
+					</dd>
+				</dl>
+
+				<dl class="line_shopping">
+					<dt type="getLineShopping">
+						<i class="icon icon-xingzhuang250"></i>
+						<strong>自费项及购物店</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd id="shopping">
+						<div>
+							<div subdata="{{single}}" class="line_art">
+								<strong>[自费项] {{actionName}}</strong>
+								<span><b>时间：</b>第{{scheduleDate}}天</span>
+								<span class="{{duration_hide}}"><b>时长：</b>{{actionDuration}}<small>分钟</small></span>
+								<span><b>价格：</b>{{currencySymbol}}{{referencePrice}} </span>
+							</div>
+							<div subdata="{{shop}}" class="line_art">
+								<strong>[购物店] {{actionName}}</strong>
+								<span><b>时间：</b>第{{scheduleDate}}天</span>
+								<span class="{{duration_hide}}"><b>时长：</b>{{actionDuration}}分钟</span>
+								<span class="{{content_hide}}"><b>说明：</b>{{content}} </span>
+							</div>
+						</div>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt type="getLineDestine">
+						<i class="icon icon-yudingxuzhi"></i>
+						<strong>预定须知</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd id="lineDestine">
+						<div class="line_art">{{0}}</div>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt type="getLineCancellation">
+						<i class="icon icon-tuiding"></i>
+						<strong>退定须知</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd id="lineCancellation">
+						<div class="line_art">{{0}}</div>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt type="getLineVisa">
+						<i class="icon icon-qianzheng"></i>
+						<strong>签证说明</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd id="lineVisa">
+						<div class="line_art">{{0}}</div>
+					</dd>
+				</dl>
+
+				<dl>
+					<dt type="getLineNote">
+						<i class="icon icon-xingzhuang254"></i>
+						<strong>注意事项</strong>
+						<span><i class="icon icon-disclosure"></i></span>
+					</dt>
+					<dd id="lineNote">
+						<div class="line_art">{{0}}</div>
+					</dd>
+				</dl>
+			</section>
+
+		</div>
+	</div>
+	
+
+	<section class="line_ctrl">
+		<cite>
+			<span class="link_call"><a href="10086"><i class="icon icon-xingzhuang210"></i>电话咨询</a></span>
+			<span class="link"><a href="line_booking.html" class="js-booking"><i class="icon icon-defaultbanbenxiugaijilu"></i>立即预定</a></span>
+		</cite>
+	</section>
+
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/iscroll-probe.js"></script>
+	<script type="text/javascript">
+
+		
+		window.scroll = new IScroll('#container',{mouseWheel: false,scrollbars: false,probeType:3});
+
+
+		service({
+			"type" : "getLine",
+		    "productId": href.productId,
+		    "supplierId": href.supplierId,
+		},function(json){
+
+			// 数据过滤
+			if(json.ret){
+				var tmp = [];
+				json.data.useDateList.map(function(i){tmp.push({"str":i.substr(5),"date" : i});});
+				json.data.useDateList = tmp;
+
+				// 每天
+				json.data.lineSchedules && json.data.lineSchedules.map(function(i){
+					i.food = i.breakfastSingleInfos.length ==0 && i.lunchSingleInfos.length ==0 && i.supperSingleInfos.length ==0 ? 'hide' : 'show';
+
+					i.hotel = i.hotelNameInfos.length == 0 && i.hotelRemarkInfos.length ==0 ? 'hide' : 'show';
+
+					i.traffic = i.trainNoInfos.length == 0 && i.trainRemarkInfos.length == 0 && i.flightNoInfos.length == 0 && i.flightRemarkInfos.length == 0 ? 'hide' : 'show' ;
+
+					i.resorts = i.scenicSpotSingles.length == 0 ? 'hide' : 'show' ;
+
+					i.arrow = i.startingCityName && i.destinationAreaName ? 'show' : 'hide';
+
+					// {{startingCityName}} <i class="{{arrow}}">→</i> {{destinationAreaName}}
+
+
+				});
+			}else{
+				return false;
+			}
+
+
+			// banner
+			window.tplExchange(document.getElementById('line_banner'),json.data,!json.ret);
+			window.tplExchange(document.getElementById('line_date'),json.data,!json.ret);
+			window.tplExchange(document.getElementById('characteristic'),json.data,!json.ret);
+			window.tplExchange(document.getElementById('introduction'),json.data,!json.ret);
+			window.tplExchange(document.getElementById('notice'),json.data,!json.ret);
+
+
+
+
+			var pullRefresh = document.querySelector('.pullRefresh')
+			var header = document.querySelector('header');
+			var line = document.querySelector('.line'); 
+			var tab = line.querySelector('h2');
+			var line_tab = document.querySelector('.line_tab');
+
+			var totop = tab.parentNode.offsetTop;
+			var line_totop = line.offsetTop - 104;
+			var status = 0;
+
+			tab.totop = [
+				document.getElementById('characteristic').offsetTop + line_totop,
+				document.getElementById('introduction').offsetTop + line_totop,
+				document.getElementById('notice').offsetTop + line_totop,
+			];
+
+			var changeTab = (function(){
+
+				var index = -1;
+
+				return function(idx){
+
+					if(idx == index ){return false;}
+					index = idx;
+
+					Array.prototype.slice.call(line_tab.querySelectorAll('a')).map(function(item,i){
+						if(i+1 == index){
+							item.classList.add('active');
+						}else{
+							item.classList.remove('active');
+						}
+					});
+				}
+			})();
+
+
+			
+
+			var scrollFun = function(){
+				var top = -this.y;
+				var idx = 0;
+
+				// 头部渐变
+				if(top>200){
+					header.style.backgroundColor = 'rgba(12,163,240,1)';
+				}else if(top<44){
+					header.style.backgroundColor = 'rgba(12,163,240,0)';
+				}else{
+					header.style.backgroundColor = 'rgba(12,163,240,'+(top-44)/156+')';
+				}
+
+				// tab悬浮
+				if(top - totop +64 <0 && status == 1){
+					status = 0;
+					line_tab.classList.remove('active');
+				}else if(top - totop +64 >=0 && status == 0){
+					line_tab.classList.add('active');
+					status = 1;
+				}
+
+				// tab 切换
+				tab.totop.map(function(i){if(top - i > 0){idx +=1}});
+				changeTab(idx);
+
+			}
+
+			window.scroll.on('scroll', scrollFun);
+			window.scroll.on('scrollEnd', scrollFun);
+
+
+
+			// 保存线路信息
+			localStorage.setItem('line_info',JSON.stringify({
+				id : json.data.id,
+				lineImageUrl : json.data.lineImageUrl,
+				shareUrl : json.data.shareUrl,
+				name : json.data.name,
+				lineNameRemark : json.data.lineNameRemark,
+				days : json.data.days,
+				lineCategoryId : json.data.lineCategoryId,
+				startingAreaName : json.data.startingAreaName,
+			}));
+
+			window.scroll.refresh();
+
+			// 关闭正在加载
+			document.querySelector('.loading').classList.add('end');
+
+		});
+
+
+
+	
+
+		// 标题点击事件
+		mui('.line_tab').on('tap','a',function(){
+
+			var line = document.querySelector('.line'); 
+			var item_totop = document.getElementById(this.getAttribute('for')).offsetTop + line.offsetTop - 103;
+			window.scroll.scrollTo(0, - item_totop , 10);
+			return false;
+		});
+
+
+		// 标题点击切换
+		mui('body').on('tap','.line h2 a',function(e){
+
+			var line = document.querySelector('.line'); 
+			var item_totop = document.getElementById(this.getAttribute('for')).offsetTop + line.offsetTop - 103;
+			window.scroll.scrollTo(0, - item_totop , 10);
+
+			return false;
+		});
+
+
+
+
+		// 点击收藏
+		mui('body').on('tap','.line_banner_cnt h6',function(){
+			var classList = this.classList;
+
+			var req = {
+				"type" : "setCollect",
+			    "linePublishInfoId":parseInt(this.getAttribute('linePublishInfoId')),
+			}
+
+			if(this.className == 'line_collect_1'){
+				this.className = 'line_collect_2';
+			}else{
+				this.className = 'line_collect_1';
+			}
+			service(req,function(json){
+				if(!json.ret){
+					plus.ui.toast(json.msg);
+					return ;
+				}
+			});
+		});
+
+
+
+
+		// 标题点击事件
+		mui('body').on('tap','.line dt',function(){
+
+			var classList = this.parentNode.classList;
+			var line = document.querySelector('.line'); 
+			var line_totop = line.offsetTop - 104;
+			var tab = line.querySelector('h2');
+			var type = this.getAttribute('type');
+			var that = this;
+
+
+			if(classList.contains('active')){
+				classList.remove('active')
+			}else{
+				classList.add('active');
+
+				if(type){
+					// 异步取数据
+					var dd = this.parentNode.querySelector('dd');
+					service({
+						"type" : type,
+						"productId": href.productId,
+					},function(json){
+
+
+						if(json.ret && type == 'getLineShopping'){
+							json.data.single.map(function(i){
+								i.duration_hide = i.actionDuration ? '' : 'hide';
+							})
+
+							json.data.shop.map(function(i){
+								i.duration_hide = i.actionDuration ? '' : 'hide';
+								i.content_hide = i.content ? '' : 'hide';
+							});
+
+							if(json.data.single.length + json.data.shop.length == 0){
+								that.classList.add('null');
+							}
+						}
+
+
+						window.tplExchange(dd,json.data,!json.ret);
+
+						!json.data && that.classList.add('null');
+						that.removeAttribute('type');
+						that = null;
+
+
+						tab.totop = [
+							document.getElementById('characteristic').offsetTop + line_totop,
+							document.getElementById('introduction').offsetTop + line_totop,
+							document.getElementById('notice').offsetTop + line_totop,
+						];
+						window.scroll.refresh();
+
+
+					});
+				}
+			}
+
+			// 更新信息
+			tab.totop = [
+				document.getElementById('characteristic').offsetTop + line_totop,
+				document.getElementById('introduction').offsetTop + line_totop,
+				document.getElementById('notice').offsetTop + line_totop,
+			];
+			window.scroll.refresh();
+
+			return false;
+		});
+
+
+		// 打电话
+		mui('body').on('tap','.link_call a',function(){
+
+			var keeper = localStorage.getItem('user_keeper');
+			var home = plus.webview.getLaunchWebview();
+
+			// 先绑定管家
+			if(!keeper){
+				plus.ui.toast('请先绑定管家');
+				home && mui.fire(home, 'openFull', {viewId : 'keeper',href:'keeper.html'});
+				return false;
+			}
+
+
+			var call = JSON.parse(keeper).mobile;
+
+			if(!call){plus.ui.toast('号码为空'); return false;}
+			plus.ui.confirm("确定拨打电话吗？", function(i) {
+				i.index == 0 && plus.device.dial(call, false);
+			}, "电话", ["确认", "取消"]);
+			
+			return false;
+		});
+
+
+
+		// 点击下一步
+		mui('body').on('tap','a.js-booking',function(){
+
+
+			var home = plus.webview.getLaunchWebview();
+
+			// // 未登陆
+			// if(!localStorage.getItem('token')){
+			// 	plus.ui.toast('请先登陆');
+			// 	home && mui.fire(home, 'openFull', {viewId : 'login',href:'login.html'});
+			// 	return false;
+			// }
+
+
+			// // 先绑定管家
+			// if(!localStorage.getItem('user_keeper')){
+			// 	plus.ui.toast('请先绑定管家');
+			// 	home && mui.fire(home, 'openFull', {viewId : 'keeper',href:'keeper.html'});
+			// 	return false;
+			// }
+
+			var date = this.getAttribute('date');
+			if(!date){
+				var elem = document.querySelector('.line_date ul a');
+				date = elem ? elem.getAttribute('date') : false;
+			}
+
+			if(!date){
+				plus.ui.toast('无可选团期');
+				return false;
+			}
+
+			
+
+			var req = {
+				viewId : 'line_booking',
+				href : [
+					this.getAttribute('href'),
+					'?productId=' + href.productId,
+					'&supplierId=' + href.supplierId,
+					'&date=' + date,
+				].join('')
+			}
+
+			home && mui.fire(home, 'openFull', req);
+			return false;
+		});
+
+
+
+		// 图片加载
+		document.addEventListener("load", function(ev) {window.scroll.refresh();}, true);
+
+
+		// 分享
+		!function(){
+
+			var shares = null;
+			var shareMessage = function (s,ex){				
+				var info = JSON.parse(localStorage.getItem('line_info') || '{}');
+				var msg = {
+					title : info.name,
+					href : info.shareUrl,
+					thumbs : info.lineImageUrl,
+					content: info.lineNameRemark,
+					extra: {scene:ex}
+				}
+				s.send( msg, function(){
+					plus.ui.toast( "分享到\""+s.description+"\"成功！ " );
+				}, function(e){
+					plus.ui.toast( "分享到\""+s.description+"\"失败");
+				} );
+			}
+
+
+			var shareAction = function (id,ex) {
+				var s=null;
+				if(!id||!(s=shares[id])){
+					plus.ui.toast( "无效的分享服务！" );
+					return;
+				}
+				if ( s.authenticated ) {
+					plus.ui.toast( "---已授权---" );
+					shareMessage(s,ex);
+				} else {
+					plus.ui.toast( "---未授权---" );
+					s.authorize( function(){shareMessage(s,ex);},function(e){
+						plus.ui.toast( "认证授权失败："+e.code+" - "+e.message );
+					});
+				}
+			}
+
+
+			// 监听plusready事件  
+			document.addEventListener( "plusready", function(){
+				// 扩展API加载完毕，现在可以正常调用扩展API
+				plus.share.getServices( function(s){
+					shares={};
+					s.map(function(i){shares[i.id]=i;});
+				});
+			}, false );
+
+
+			mui('body').on('tap','.header_share',function(){
+				
+				// if (!share) {return;}
+				var keeper = localStorage.getItem('user_keeper');
+
+				// 先绑定管家
+				if(!keeper){
+					plus.ui.toast('请先绑定管家');
+					mui.fire(plus.webview.getLaunchWebview(), 'openFull', {viewId : 'keeper',href:'keeper.html'});
+					return false;
+				}
+
+				// 如果未登陆，则加上管家电话
+				if(!localStorage.getItem('token')){
+					var info = JSON.parse(localStorage.getItem('line_info') || '{}');
+					info.shareUrl = info.shareUrl+ '&mobile='+JSON.parse(keeper).mobile;
+					localStorage.setItem('line_info',JSON.stringify(info));
+				}
+
+				var ids=[{id:"weixin",ex:"WXSceneSession"},{id:"weixin",ex:"WXSceneTimeline"}];
+				var bts=[{title:"发送给微信好友"},{title:"分享到微信朋友圈"}];
+
+				if(plus.os.name=="iOS"){
+					ids.push({id:"qq"});
+					bts.push({title:"分享到QQ"});
+				}
+				plus.nativeUI.actionSheet({cancel:"取消",buttons:bts},
+					function(e){
+						var i=e.index;
+						if(i>0){
+							shareAction(ids[i-1].id,ids[i-1].ex);
+						}
+					}
+				);
+
+
+
+				return false;
+			});
+
+		}();
+
+
+		
+
+
+		
+	</script>
+	
+
+
+	
+</body>
+</html>

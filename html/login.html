@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+	<meta content="yes" name="apple-mobile-web-app-capable"/> 
+	<meta content="yes" name="apple-touch-fullscreen"/> 
+	<meta name="data-spm" content="a215s"/> 
+	<meta content="telephone=no,email=no" name="format-detection"/>
+	<meta content="fullscreen=yes,preventMove=no" name="ML-Config"/>
+	<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires"content="0">
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+	<title>login</title>
+	<style type="text/css">body{background:url(../images/login_bkg.jpg) no-repeat center center; }</style>
+</head>
+<body>
+
+
+
+	<header class="login_header">
+		<h2>登录</h2>
+		<small class="toback"><i class="icon icon-fanhui"></i></small>
+	</header>
+
+	<form action="#" class="login">
+		<h2><i class="icon icon-xingzhuang185"></i></h2>
+		<cite>
+			<label>
+				<span><i class="icon icon-xingzhuang226"></i></span>
+				<input type="tel" name="userNo" placeholder="请输入您的手机号码">
+			</label>
+			<label class="previewpassword">
+				<span><i class="icon icon-mima"></i></span>
+				<input type="password" name="pwd" placeholder="请输入您的密码">
+				<em><i class="icon icon-xingzhuang42"></i></em>
+			</label>
+		</cite>
+		<p><a href="password.html">忘记密码？</a></p>
+
+
+		<a class="button1" >登录</a>
+		<a class="button" href="register.html">注册新用户</a>
+
+	</form>
+
+	<script src="../js/service.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script type="text/javascript">
+
+		mui('body').on('tap','.button1',function(){
+
+			var data = window.serialize(this.closest('form'));
+
+			if(!data.userNo){plus.ui.toast( "手机号码不能为空");return false;}
+			if(!data.pwd){plus.ui.toast( "密码不能为空");return false;}
+			if(!(/^1[3|4|5|7|8]\d{9}$/.test(data.userNo))){plus.ui.toast( "手机号码有误");return false;}
+
+			data.type = 'login';
+
+			// 添加管家信息
+			var keeper = localStorage.getItem('user_keeper');
+			if(keeper){
+				keeper = JSON.parse(keeper);
+				data.myButler = {
+					"clientPeerId":keeper.clientPeerId,
+					"sellUserId":keeper.sellUserId,
+					"bindDate": (new Date()).getTime()
+				}
+			}
+
+			service(data,function(json){
+
+				if(json.ret){
+					json.data.token && localStorage.setItem('token',json.data.token);
+					plus.webview.getLaunchWebview().reload();
+					mui.back();
+				}else{
+					plus.ui.toast(json.msg);
+				}
+			});
+			return false;
+		});
+
+
+		// 查看密码
+		mui('body').on('tap','.previewpassword em',function(){
+			var input = this.parentNode.querySelector('input');
+			var type = input.getAttribute('type');
+
+			if(!this.classList.contains('active')){
+				input.setAttribute('type','text');
+				this.classList.add('active');
+			}else{
+				input.setAttribute('type','password');
+				this.classList.remove('active');
+			}
+			return false;
+		});
+
+
+	</script>
+
+
+
+
+	
+</body>
+</html>
